@@ -3,9 +3,21 @@ import { Logo } from 'components/atoms/Logo'
 import SocialButton from 'components/atoms/SocialButton'
 import type { GetServerSideProps, NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import backGroundLogin from '../public/background-login.jpg'
 
 const Home: NextPage = () => {
+  const [session, loading] = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    console.log(session)
+    if (session) {
+      router.push('/app')
+    }
+  }, [session, router])
+
   return (
     <Container
       maxWidth="lg"

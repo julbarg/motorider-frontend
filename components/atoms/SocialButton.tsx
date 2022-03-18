@@ -23,6 +23,7 @@ const SocialButton: React.FC<SocialButtonProps> = (props) => {
         width: '100%',
         border: '0 solid',
       }}
+      onClick={onClick}
     >
       <Icon />
       <Box
