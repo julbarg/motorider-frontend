@@ -1,17 +1,11 @@
-import { Container, Grid } from '@mui/material'
-import type { GetServerSideProps, NextPage } from 'next'
-import { DashboardSection } from 'components/molecules/DashboardSection'
-import { DashboardContent } from 'components/molecules/DashboardContent'
-import { H1 } from 'components/atoms/H1'
+import { Box, Container, Grid, Paper } from '@mui/material'
 import { Logo } from 'components/atoms/Logo'
-import { DashboardNav } from 'components/molecules/DashboardNav'
-import { User } from 'types'
+import SocialButton from 'components/atoms/SocialButton'
+import type { GetServerSideProps, NextPage } from 'next'
+import { signIn, useSession } from 'next-auth/client'
+import backGroundLogin from '../public/background-login.jpg'
 
-type HomeProps = {
-  user: User
-}
-
-const Home: NextPage<HomeProps> = (props) => {
+const Home: NextPage = () => {
   return (
     <Container
       maxWidth="lg"
@@ -19,32 +13,66 @@ const Home: NextPage<HomeProps> = (props) => {
         marginTop: 5,
       }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <DashboardSection primary={true}>
-            <DashboardNav user={props.user} />
-          </DashboardSection>
+      <Grid
+        container
+        spacing={0}
+        justifyContent="center"
+        textAlign="center"
+        alignItems="center"
+        height="80vh"
+        sx={{ borderRadius: '15px' }}
+      >
+        <Grid
+          item
+          xs={6}
+          sx={{
+            backgroundImage: `url(${backGroundLogin.src})`,
+            backgroundSize: 'cover',
+            backgroundColor: 'primary.main',
+            color: 'common.white',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            boxShadow:
+              '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+            borderRadius: '15px 0 0 15px',
+          }}
+        >
+          <Logo size="large" />
+          <Box>Manage the expenses of your passion</Box>
         </Grid>
-        <Grid item xs={9}>
-          <DashboardSection>
-            <DashboardContent user={props.user} />
-          </DashboardSection>
+        <Grid
+          item
+          xs={6}
+          sx={{
+            backgroundColor: 'common.white',
+            height: '100%',
+            minHeight: '100%',
+            display: 'grid',
+            gridTemplateRows: '1fr auto',
+            gridTemplateColumns: '100%',
+            boxShadow:
+              '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+            borderRadius: '0 15px 15px 0',
+          }}
+        >
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <SocialButton type="github" onClick={() => signIn('github')} />
+            </Grid>
+          </Grid>
+
+          <Box color="primary.main" fontSize={12} py={2}>
+            Design By <strong>Julian Barragan</strong>
+          </Box>
         </Grid>
       </Grid>
     </Container>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return {
-    props: {
-      user: {
-        name: 'Julian Barragan',
-        avatar:
-          'https://www.anlixtutoring.co.bw/public/files/users/full/b52e290c_free-profile-photo-whatsapp-4.png',
-      },
-    },
-  }
-}
+// export const getServerSideProps: GetServerSideProps = async (context) => {}
 
 export default Home

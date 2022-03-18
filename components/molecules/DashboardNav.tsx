@@ -7,17 +7,7 @@ type DashboardNavProps = {
   user: User
 }
 
-const ImageWrap = styled('span')({
-  map: 21,
-  '& > img': {
-    borderRadius: '50%',
-    height: '200px',
-    boxShadow: 'rgb(149 157 165 / 20%) 0px 8px 24px',
-  },
-})
-
 export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
-  console.log(props)
   const { user } = props
   return (
     <Box>
