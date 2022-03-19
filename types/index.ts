@@ -1,4 +1,5 @@
 export interface User {
-    name: string
-    image: string
+    name?: string | null
+    email?: string | null
+    image?: string | null
 }

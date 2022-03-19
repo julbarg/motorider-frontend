@@ -4,7 +4,7 @@ import { User } from 'types'
 import Image from 'next/image'
 
 type DashboardNavProps = {
-  user?: User
+  user?: User | undefined
 }
 
 export const DashboardNav: React.FC<DashboardNavProps> = (props) => {

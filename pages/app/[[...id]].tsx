@@ -3,15 +3,17 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { DashboardSection } from 'components/molecules/DashboardSection'
 import { DashboardContent } from 'components/molecules/DashboardContent'
 import { DashboardNav } from 'components/molecules/DashboardNav'
-import { User } from 'types'
 import { getSession, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
+import { Session } from 'next-auth'
 
-const Dashboard: NextPage = (props) => {
+type DashboardProps = {
+  session: Session
+}
+
+const Dashboard: NextPage<DashboardProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
-
-  console.log(session)
 
   if (loading) {
     return null
@@ -21,7 +23,7 @@ const Dashboard: NextPage = (props) => {
     return (
       <Dialog
         disableEscapeKeyDown={true}
-        onClose={() => router.push('/types')}
+        onClose={() => router.push('/')}
         open={true}
       ></Dialog>
     )
@@ -37,12 +39,12 @@ const Dashboard: NextPage = (props) => {
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <DashboardSection primary={true}>
-            <DashboardNav user={session.user} />
+            <DashboardNav user={session?.user} />
           </DashboardSection>
         </Grid>
         <Grid item xs={9}>
           <DashboardSection>
-            <DashboardContent user={session.user} />
+            <DashboardContent user={session?.user} />
           </DashboardSection>
         </Grid>
       </Grid>

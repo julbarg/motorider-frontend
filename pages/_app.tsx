@@ -20,15 +20,16 @@ export const MotoRiderApp = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsEmotion) => {
   return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Provider session={pageProps}>
+    <Provider session={pageProps}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+
           <Component {...pageProps} />
-        </Provider>
-      </ThemeProvider>
-    </CacheProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </Provider>
   )
 }
 
