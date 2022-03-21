@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import { H1 } from 'components/atoms/H1'
+import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { User } from 'types'
 
 type DashboardContentProps = {
@@ -9,13 +9,7 @@ type DashboardContentProps = {
 export const DashboardContent: React.FC<DashboardContentProps> = (props) => {
   return (
     <Box display="flex" flexDirection="column">
-      <H1>
-        Hi,{' '}
-        <Box sx={{ color: 'primary.main' }} component="span">
-          {props.user?.name}
-        </Box>
-      </H1>
-      <Box sx={{ marginTop: '-5px' }}>Welcome back!</Box>
+      <DashboardTitle name={props.user?.name} />
     </Box>
   )
 }

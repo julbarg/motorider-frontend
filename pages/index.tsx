@@ -12,7 +12,6 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(session)
     if (session) {
       router.push('/app')
     }

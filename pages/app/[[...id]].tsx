@@ -1,11 +1,21 @@
-import { Container, Dialog, Grid, Modal } from '@mui/material'
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+} from '@mui/material'
 import type { GetServerSideProps, NextPage } from 'next'
 import { DashboardSection } from 'components/molecules/DashboardSection'
 import { DashboardContent } from 'components/molecules/DashboardContent'
 import { DashboardNav } from 'components/molecules/DashboardNav'
-import { getSession, useSession } from 'next-auth/client'
+import { getSession, useSession, signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { Session } from 'next-auth'
+import { route } from 'next/dist/server/router'
 
 type DashboardProps = {
   session: Session
@@ -25,7 +35,19 @@ const Dashboard: NextPage<DashboardProps> = (props) => {
         disableEscapeKeyDown={true}
         onClose={() => router.push('/')}
         open={true}
-      ></Dialog>
+      >
+        <DialogTitle id="alert-dialog-title">Session Expired</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Sign In to continue
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button sx={{ my: 2 }} onClick={() => router.push('/')} autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     )
   }
 
@@ -38,7 +60,7 @@ const Dashboard: NextPage<DashboardProps> = (props) => {
     >
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <DashboardSection primary={true}>
+          <DashboardSection primary>
             <DashboardNav user={session?.user} />
           </DashboardSection>
         </Grid>
