@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { User } from 'types'
+import { DashboardMotorBike } from './DashboardMotorBike'
 
 type DashboardContentProps = {
   user?: User
@@ -10,6 +11,7 @@ export const DashboardContent: React.FC<DashboardContentProps> = (props) => {
   return (
     <Box display="flex" flexDirection="column">
       <DashboardTitle name={props.user?.name} />
+      <DashboardMotorBike motos={[]} />
     </Box>
   )
 }

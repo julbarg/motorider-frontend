@@ -1,8 +1,10 @@
-import { Box, Button, Grid, styled } from '@mui/material'
+import { Box, Grid, styled } from '@mui/material'
 import { Logo } from 'components/atoms/Logo'
 import { User } from 'types'
 import Image from 'next/image'
-import { signOut } from 'next-auth/client'
+import { NavLink } from 'components/atoms/NavLink'
+import TwoWheelerIcon from '@mui/icons-material/TwoWheeler'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 
 type DashboardNavProps = {
   user?: User | undefined
@@ -10,18 +12,14 @@ type DashboardNavProps = {
 
 export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
   const { user } = props
+  const twoWheelerIcon = <TwoWheelerIcon fontSize="small" />
+  const manageAccountsIcon = <ManageAccountsIcon fontSize="small" />
 
   return (
     <Box>
       <Logo />
       {user?.image && (
-        <Grid
-          container
-          justifyContent="center"
-          my={2}
-          flexDirection="column"
-          alignItems="center"
-        >
+        <Grid container my={2} flexDirection="column" alignItems="center">
           <Grid item>
             <Image
               className="avatar"
@@ -39,6 +37,14 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
           </Grid>
           <Grid item my={1}>
             {user.name}
+          </Grid>
+          <Grid my={2} alignSelf="flex-start" sx={{ width: '100%' }}>
+            <NavLink icon={twoWheelerIcon} active={true} href="/app">
+              Motorbikes
+            </NavLink>
+            <NavLink icon={manageAccountsIcon} href="/app">
+              Profile
+            </NavLink>
           </Grid>
         </Grid>
       )}

@@ -10,7 +10,7 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
   return (
     <Box display="flex" justifyContent="space-between">
       <Box>
-        <H1>
+        <H1 color="secondary.main">
           Hi,{' '}
           <Box sx={{ color: 'primary.main' }} component="span">
             {props.name || ''}

@@ -1,21 +1,12 @@
-import {
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-} from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import type { GetServerSideProps, NextPage } from 'next'
 import { DashboardSection } from 'components/molecules/DashboardSection'
 import { DashboardContent } from 'components/molecules/DashboardContent'
 import { DashboardNav } from 'components/molecules/DashboardNav'
-import { getSession, useSession, signOut } from 'next-auth/client'
+import { getSession, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { Session } from 'next-auth'
-import { route } from 'next/dist/server/router'
+import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
 
 type DashboardProps = {
   session: Session
@@ -30,25 +21,7 @@ const Dashboard: NextPage<DashboardProps> = (props) => {
   }
 
   if (!loading && !session) {
-    return (
-      <Dialog
-        disableEscapeKeyDown={true}
-        onClose={() => router.push('/')}
-        open={true}
-      >
-        <DialogTitle id="alert-dialog-title">Session Expired</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Sign In to continue
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button sx={{ my: 2 }} onClick={() => router.push('/')} autoFocus>
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
+    return <SessionExpiredDialog onClick={() => router.push('/')} />
   }
 
   return (
