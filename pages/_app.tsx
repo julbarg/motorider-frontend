@@ -6,6 +6,7 @@ import createEmotionCache from './theme/createEmotionCache'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { Provider } from 'next-auth/client'
+import Head from 'next/head'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -20,16 +21,20 @@ export const MotoRiderApp = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsEmotion) => {
   return (
-    <Provider session={pageProps}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </Provider>
+    <>
+      <Provider session={pageProps}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Head>
+              <title>Moto Rider App</title>
+            </Head>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
+    </>
   )
 }
 

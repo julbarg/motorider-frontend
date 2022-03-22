@@ -2,7 +2,7 @@ import { Box, Grid } from '@mui/material'
 import { H2 } from 'components/atoms/H2'
 import AddIcon from '@mui/icons-material/Add'
 import { CardButton } from 'components/atoms/CardButton'
-import { CardMoto } from './CardMoto'
+import { CardMoto } from '../CardMoto'
 
 type DashboardMotorBikeProps = {
   motos: []
