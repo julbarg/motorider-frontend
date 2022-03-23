@@ -15,15 +15,15 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
   return (
     <Card
       sx={{
-        width: 250,
-        minHeight: 250,
+        width: 240,
+        minHeight: 320,
       }}
     >
       <CardMedia
         component="img"
-        height="150"
+        height="140"
         image="https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg"
-        alt="green iguana"
+        alt="Duke 390"
         sx={{
           objectFit: 'cover',
         }}
@@ -44,8 +44,8 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
         <Typography variant="body2" color="text.secondary">
           39.458 Km
         </Typography>
-        <Typography mt={2} variant="body2" color="text.secondary">
-          Total Expenses: $1.298.254
+        <Typography variant="body2" color="text.secondary">
+          Total Expenses: <strong>$1.298.254</strong>
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>

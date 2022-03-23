@@ -1,17 +1,17 @@
 import { Container } from '@mui/material'
-import type { GetServerSideProps, NextPage } from 'next'
+import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
+import { GetServerSideProps, NextPage } from 'next'
+import { Session } from 'next-auth'
 import { getSession, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { Session } from 'next-auth'
-import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
 import { Dashboard } from 'components/molecules/Dashboard'
-import { MotosResult } from 'components/molecules/MotosResult'
+import { CreateMoto } from 'components/molecules/CreateMoto'
 
-type DashboardProps = {
+type AddNewMotoPageProps = {
   session: Session
 }
 
-const App: NextPage<DashboardProps> = (props) => {
+const AddNewMotoPage: NextPage<AddNewMotoPageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
 
@@ -34,7 +34,7 @@ const App: NextPage<DashboardProps> = (props) => {
       }}
     >
       <Dashboard user={session?.user}>
-        <MotosResult user={session?.user} />
+        <CreateMoto user={session?.user} />
       </Dashboard>
     </Container>
   )
@@ -49,4 +49,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default App
+export default AddNewMotoPage

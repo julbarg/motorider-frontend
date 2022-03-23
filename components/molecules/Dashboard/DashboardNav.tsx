@@ -5,15 +5,20 @@ import Image from 'next/image'
 import { NavLink } from 'components/atoms/NavLink'
 import TwoWheelerIcon from '@mui/icons-material/TwoWheeler'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useRouter } from 'next/router'
 
 type DashboardNavProps = {
   user?: User | undefined
 }
 
 export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
+  const router = useRouter()
   const { user } = props
+
   const twoWheelerIcon = <TwoWheelerIcon fontSize="small" />
   const manageAccountsIcon = <ManageAccountsIcon fontSize="small" />
+  const addCircleOutlineIcon = <AddCircleOutlineIcon fontSize="small" />
 
   return (
     <Box>
@@ -39,10 +44,21 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
             {user.name}
           </Grid>
           <Grid my={2} alignSelf="flex-start" sx={{ width: '100%' }}>
-            <NavLink icon={twoWheelerIcon} active={true} href="/app">
+            <NavLink
+              icon={twoWheelerIcon}
+              href="/app"
+              active={router.asPath === '/app'}
+            >
               Motorbikes
             </NavLink>
-            <NavLink icon={manageAccountsIcon} href="/app">
+            <NavLink
+              icon={addCircleOutlineIcon}
+              href="/app/moto/new"
+              active={router.asPath === '/app/moto/new'}
+            >
+              Add Motor Bike
+            </NavLink>
+            <NavLink icon={manageAccountsIcon} href="/app/">
               Profile
             </NavLink>
           </Grid>

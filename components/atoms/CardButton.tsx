@@ -12,6 +12,9 @@ export const CardButton: React.FC<CardButtonProps> = (props) => {
       sx={{
         minWidth: 200,
         height: 250,
+
+        width: 240,
+        minHeight: 320,
       }}
     >
       <CardContent
