@@ -5,14 +5,26 @@ import { Session } from 'next-auth'
 import { getSession, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { Dashboard } from 'components/molecules/Dashboard'
-import { CreateMoto } from 'components/molecules/CreateMoto'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
+import _ from 'lodash'
+import { Moto } from 'components/molecules/Moto'
 
-type AddNewMotoPageProps = {
-  session: Session
+export type IMoto = {
+  name: string
+  brand: string
+  line: string
+  image: string
+  km: number
+  total: number
+  year: number
 }
 
-const AddNewMotoPage: NextPage<AddNewMotoPageProps> = (props) => {
+type MotoPageProps = {
+  session: Session
+  moto: IMoto
+}
+
+const MotoPage: NextPage<MotoPageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
 
@@ -24,6 +36,10 @@ const AddNewMotoPage: NextPage<AddNewMotoPageProps> = (props) => {
     return <SessionExpiredDialog onClick={() => router.push('/')} />
   }
 
+  const words = _.words(props.moto.name)
+  const secondTile = words.pop() || ''
+  const initialTitle = words.join(' ')
+
   return (
     <Container
       maxWidth="lg"
@@ -34,11 +50,11 @@ const AddNewMotoPage: NextPage<AddNewMotoPageProps> = (props) => {
     >
       <Dashboard user={session?.user}>
         <DashboardTitle
-          initialTitle="Create"
-          secondTile="Motorbike"
-          subtitle="Register your motorbike to start manage your expenses"
+          initialTitle={initialTitle}
+          secondTile={secondTile}
+          subtitle="Check your expenses"
         />
-        <CreateMoto user={session?.user} />
+        <Moto moto={props.moto} />
       </Dashboard>
     </Container>
   )
@@ -46,11 +62,32 @@ const AddNewMotoPage: NextPage<AddNewMotoPageProps> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
+  let moto = {}
+
+  if (!session || !session.user) {
+    return { props: {} }
+  }
+
+  if (context?.params?.id) {
+    moto = {
+      id: context.params.id,
+      name: 'Naranja Mecanica',
+      brand: 'KTM',
+      line: 'Duke 390',
+      image:
+        'https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg',
+      km: 78950,
+      total: 1450258,
+      year: 2014,
+    }
+  }
+
   return {
     props: {
       session,
+      moto,
     },
   }
 }
 
-export default AddNewMotoPage
+export default MotoPage

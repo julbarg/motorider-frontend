@@ -3,18 +3,15 @@ import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 type CardButtonProps = {
   title: string
   icon: React.ReactNode
-  onClick?: () => {}
+  onClick?: () => void
 }
 
 export const CardButton: React.FC<CardButtonProps> = (props) => {
   return (
     <Card
       sx={{
-        minWidth: 200,
-        height: 250,
-
+        height: 320,
         width: 240,
-        minHeight: 320,
       }}
     >
       <CardContent

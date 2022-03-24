@@ -3,7 +3,9 @@ import { signOut } from 'next-auth/client'
 import { H1 } from './H1'
 
 type DashboardTitleProps = {
-  name?: string | null
+  initialTitle: string
+  secondTile: string
+  subtitle?: string
 }
 
 export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
@@ -11,12 +13,12 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
     <Box display="flex" justifyContent="space-between">
       <Box>
         <H1 color="secondary.main">
-          Hi,{' '}
+          {props.initialTitle}{' '}
           <Box sx={{ color: 'primary.main' }} component="span">
-            {props.name || ''}
+            {props.secondTile}
           </Box>
         </H1>
-        <Box sx={{ marginTop: '-5px' }}>Welcome back!</Box>
+        <Box sx={{ marginTop: '-5px' }}>{props.subtitle}</Box>
       </Box>
       <Box>
         <Button variant="contained" onClick={() => signOut()}>

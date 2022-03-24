@@ -17,6 +17,7 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
       sx={{
         width: 240,
         minHeight: 320,
+        cursor: 'pointer',
       }}
     >
       <CardMedia

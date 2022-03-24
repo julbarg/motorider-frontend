@@ -1,13 +1,13 @@
 import { Typography } from '@mui/material'
 
 type Props = {
-  color: string
+  color?: string
 }
 
 export const H2: React.FC<Props> = (props) => {
   return (
     <Typography
-      color={props.color}
+      color={props.color || 'secondary'}
       variant="h5"
       component="h3"
       sx={{ fontFamily: 'Anton' }}

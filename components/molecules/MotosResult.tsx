@@ -1,6 +1,5 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Fade, Grid, Grow, Slide, Zoom } from '@mui/material'
 import { CardButton } from 'components/atoms/CardButton'
-import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { H2 } from 'components/atoms/H2'
 import { User } from 'types'
 import { CardMoto } from './CardMoto'
@@ -17,7 +16,6 @@ export const MotosResult: React.FC<MotosResultProps> = (props) => {
 
   return (
     <Box display="flex" flexDirection="column">
-      <DashboardTitle name={props.user?.name} />
       <Box mt={2}>
         <H2 color="secondary.main">
           Your{' '}
@@ -36,18 +34,28 @@ export const MotosResult: React.FC<MotosResultProps> = (props) => {
             <CardButton
               title="Add new Moto"
               icon={addIcon}
-              onClick={() => router.push('/app/moto/new')}
+              onClick={() => {
+                router.push('/app/moto/new')
+              }}
             />
           </Grid>
-          <Grid item>
-            <CardMoto name="Duke 390" />
-          </Grid>
-          <Grid item>
-            <CardMoto name="Duke 390" />
-          </Grid>
-          <Grid item>
-            <CardMoto name="Duke 390" />
-          </Grid>
+          <Fade in={true} timeout={1000}>
+            <Grid item>
+              <CardMoto name="Duke 390" />
+            </Grid>
+          </Fade>
+
+          <Fade in={true} timeout={2000}>
+            <Grid item>
+              <CardMoto name="Duke 390" />
+            </Grid>
+          </Fade>
+
+          <Fade in={true} timeout={3000}>
+            <Grid item>
+              <CardMoto name="Duke 390" />
+            </Grid>
+          </Fade>
         </Grid>
       </Box>
     </Box>

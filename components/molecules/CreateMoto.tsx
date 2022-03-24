@@ -7,8 +7,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
 } from '@mui/material'
-import { H2 } from 'components/atoms/H2'
 import { User } from 'next-auth'
 import { useEffect, useState } from 'react'
 
@@ -16,13 +16,18 @@ type CreateMotoProps = {
   user?: User
 }
 
+type Line = {
+  value: string
+  label: string
+}
+
 const defaultValues = {
   name: '',
   brand: '',
   line: '',
-  cc: 0,
-  initialKm: 0,
-  year: 0,
+  cc: '',
+  initialKm: '',
+  year: '',
 }
 
 const brands = [
@@ -70,9 +75,17 @@ const brands = [
 
 export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
+  const [lineValues, setLineValues] = useState<Line[]>([])
 
-  // TODO Define e type
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    })
+  }
+
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target
     if (name === 'brand') {
       setFormValues({
@@ -94,130 +107,122 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
     console.log(formValues)
   }
 
+  useEffect(() => {
+    const brand = brands.find((brand) => brand.value === formValues.brand)
+    if (brand?.lines && brand!.lines!.length > 0) {
+      setLineValues(brand.lines)
+    }
+  }, [formValues.brand])
+
   return (
     <Box display="flex" flexDirection="column">
-      <Box mt={2}>
-        <H2 color="secondary.main">
-          Create{' '}
-          <Box component="span" color="primary.main">
-            Motorbike
-          </Box>
-        </H2>
-        <form onSubmit={handleSubmit}>
-          <Grid container flexDirection="row" my={1} spacing={3}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="name">Name</InputLabel>
-                <Input
-                  id="name"
-                  sx={{ px: 2 }}
-                  required={true}
-                  value={formValues.name}
-                  onChange={handleInputChange}
-                  name="name"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="brand">Brand</InputLabel>
-                <Select
-                  name="brand"
-                  value={formValues.brand}
-                  onChange={handleInputChange}
-                  id="brand"
-                  label="Brand"
-                  required={true}
-                >
-                  {brands.map((brand) => (
-                    <MenuItem key={brand.label} value={brand.value}>
-                      {brand.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="line">Line</InputLabel>
-                <Select
-                  name="line"
-                  value={formValues.line}
-                  onChange={handleInputChange}
-                  id="line"
-                  label="Line"
-                  required={true}
-                >
-                  {brands
-                    .filter((brand) => brand.value === formValues.brand)?.[0]
-                    ?.lines.map((line) => (
-                      <MenuItem key={line.label} value={line.value}>
-                        {line.label}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="cc">Cc</InputLabel>
-                <Input
-                  id="cc"
-                  aria-describedby="cc"
-                  sx={{ px: 2 }}
-                  required={true}
-                  onChange={handleInputChange}
-                  value={formValues.cc}
-                  name="cc"
-                  type="number"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="initialKm">Initial KM</InputLabel>
-                <Input
-                  id="initialKm"
-                  aria-describedby="Initial KM"
-                  sx={{ px: 2 }}
-                  required={true}
-                  onChange={handleInputChange}
-                  value={formValues.initialKm}
-                  name="initialKm"
-                  type="number"
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="year">Year</InputLabel>
-                <Input
-                  id="year"
-                  aria-describedby="Year"
-                  sx={{ px: 2 }}
-                  required={true}
-                  onChange={handleInputChange}
-                  value={formValues.year}
-                  name="year"
-                  type="number"
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} my={3}>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                type="submit"
-              >
-                Create
-              </Button>
-            </Grid>
-            <Grid item></Grid>
+      <form onSubmit={handleSubmit}>
+        <Grid container flexDirection="row" my={1} spacing={3}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="name">Name</InputLabel>
+              <Input
+                id="name"
+                sx={{ px: 2 }}
+                required={true}
+                value={formValues.name}
+                onChange={handleInputChange}
+                name="name"
+              />
+            </FormControl>
           </Grid>
-        </form>
-      </Box>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="brand">Brand</InputLabel>
+              <Select
+                name="brand"
+                value={formValues.brand}
+                onChange={handleSelectChange}
+                id="brand"
+                label="Brand"
+                required={true}
+              >
+                {brands.map((brand) => (
+                  <MenuItem key={brand.label} value={brand.value}>
+                    {brand.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="line">Line</InputLabel>
+              <Select
+                name="line"
+                value={formValues.line}
+                onChange={handleSelectChange}
+                id="line"
+                label="Line"
+                required={true}
+              >
+                {lineValues.map((line) => (
+                  <MenuItem key={line.label} value={line.value}>
+                    {line.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="cc">Cc</InputLabel>
+              <Input
+                id="cc"
+                aria-describedby="cc"
+                sx={{ px: 2 }}
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.cc}
+                name="cc"
+                type="number"
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="initialKm">Initial KM</InputLabel>
+              <Input
+                id="initialKm"
+                aria-describedby="Initial KM"
+                sx={{ px: 2 }}
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.initialKm}
+                name="initialKm"
+                type="number"
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="year">Year</InputLabel>
+              <Input
+                id="year"
+                aria-describedby="Year"
+                sx={{ px: 2 }}
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.year}
+                name="year"
+                type="number"
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} my={3}>
+            <Button fullWidth variant="contained" color="primary" type="submit">
+              Create
+            </Button>
+          </Grid>
+          <Grid item></Grid>
+        </Grid>
+      </form>
     </Box>
   )
 }

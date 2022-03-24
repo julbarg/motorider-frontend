@@ -6,6 +6,7 @@ import { Session } from 'next-auth'
 import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
 import { Dashboard } from 'components/molecules/Dashboard'
 import { MotosResult } from 'components/molecules/MotosResult'
+import { DashboardTitle } from 'components/atoms/DashboardTitle'
 
 type DashboardProps = {
   session: Session
@@ -14,8 +15,6 @@ type DashboardProps = {
 const App: NextPage<DashboardProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
-
-  console.log(router)
 
   if (loading) {
     return null
@@ -34,6 +33,11 @@ const App: NextPage<DashboardProps> = (props) => {
       }}
     >
       <Dashboard user={session?.user}>
+        <DashboardTitle
+          initialTitle="Hi"
+          secondTile={session?.user?.name || ''}
+          subtitle="Welcome Back!"
+        />
         <MotosResult user={session?.user} />
       </Dashboard>
     </Container>
