@@ -16,8 +16,10 @@
     "@mui/material": "^5.5.1",
     "lodash": "^4.17.21",
     "mongodb": "^3.6.3",
+    "nanoid": "^3.1.18",
     "next": "12.1.0",
     "next-auth": "^3.1.0",
+    "next-connect": "^0.9.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-minimal-pie-chart": "^8.2.0"

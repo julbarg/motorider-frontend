@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material'
-import { IMoto } from 'pages/app/moto/[id]'
+import { IMoto } from 'types'
 import { ExpensesDetails } from './ExpensesDetails'
 import { MotoDetails } from './MotoDetails'
 
@@ -39,7 +39,11 @@ export const Moto: React.FC<MotoProps> = (props) => {
         </Grid>
       </Grid>
       <Grid item xs={12} my={3}>
-        <ExpensesDetails pieChartData={intialData} expenses={expenses} />
+        <ExpensesDetails
+          pieChartData={intialData}
+          expenses={expenses}
+          motoId={moto._id}
+        />
       </Grid>
     </Box>
   )

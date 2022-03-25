@@ -1,7 +1,7 @@
-import { Box, Container, Grid, Paper } from '@mui/material'
+import { Box, Container, Grid } from '@mui/material'
 import { Logo } from 'components/atoms/Logo'
 import SocialButton from 'components/atoms/SocialButton'
-import type { GetServerSideProps, NextPage } from 'next'
+import { NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -76,14 +76,12 @@ const Home: NextPage = () => {
           </Grid>
 
           <Box color="primary.main" fontSize={12} py={2}>
-            Design By <strong>Julian Barragan</strong>0
+            Design By <strong>Julian Barragan</strong>
           </Box>
         </Grid>
       </Grid>
     </Container>
   )
 }
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {}
 
 export default Home

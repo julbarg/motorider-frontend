@@ -1,13 +1,13 @@
 import { Box, Fade, Grid, Grow, Slide, Zoom } from '@mui/material'
 import { CardButton } from 'components/atoms/CardButton'
 import { H2 } from 'components/atoms/H2'
-import { User } from 'types'
+import { IMoto, User } from 'types'
 import { CardMoto } from './CardMoto'
 import AddIcon from '@mui/icons-material/Add'
 import { useRouter } from 'next/router'
 
 type MotosResultProps = {
-  user?: User
+  motos: IMoto[]
 }
 
 export const MotosResult: React.FC<MotosResultProps> = (props) => {
@@ -23,13 +23,7 @@ export const MotosResult: React.FC<MotosResultProps> = (props) => {
             Motorbikes
           </Box>
         </H2>
-        <Grid
-          container
-          my={2}
-          rowSpacing={3}
-          spacing={2}
-          justifyContent="space-between"
-        >
+        <Grid container my={2} spacing={3}>
           <Grid item>
             <CardButton
               title="Add new Moto"
@@ -39,23 +33,13 @@ export const MotosResult: React.FC<MotosResultProps> = (props) => {
               }}
             />
           </Grid>
-          <Fade in={true} timeout={1000}>
-            <Grid item>
-              <CardMoto name="Duke 390" />
-            </Grid>
-          </Fade>
-
-          <Fade in={true} timeout={2000}>
-            <Grid item>
-              <CardMoto name="Duke 390" />
-            </Grid>
-          </Fade>
-
-          <Fade in={true} timeout={3000}>
-            <Grid item>
-              <CardMoto name="Duke 390" />
-            </Grid>
-          </Fade>
+          {props.motos.map((moto) => (
+            <Fade in={true} timeout={1000} key={moto._id}>
+              <Grid item>
+                <CardMoto moto={moto} />
+              </Grid>
+            </Fade>
+          ))}
         </Grid>
       </Box>
     </Box>

@@ -6,12 +6,19 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material'
+import { useRouter } from 'next/router'
+import { IMoto } from 'types'
+import { numberWithCommas } from 'utils/number-helper'
+import _ from 'lodash'
 
 type CardMotoProps = {
-  name: string
+  moto: IMoto
 }
 
 export const CardMoto: React.FC<CardMotoProps> = (props) => {
+  const { moto } = props
+  const router = useRouter()
+
   return (
     <Card
       sx={{
@@ -19,6 +26,7 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
         minHeight: 320,
         cursor: 'pointer',
       }}
+      onClick={() => router.push(`/app/moto/${moto._id}`)}
     >
       <CardMedia
         component="img"
@@ -37,13 +45,13 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
           variant="h6"
           component="h4"
         >
-          {props.name}
+          {_.capitalize(moto.model)} - {_.upperCase(moto.licensePlate)}
         </Typography>
         <Typography variant="body2" color="secondary">
-          KTM
+          {_.capitalize(moto.make)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          39.458 Km
+          {numberWithCommas(moto.km.toString())} Km
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Total Expenses: <strong>$1.298.254</strong>

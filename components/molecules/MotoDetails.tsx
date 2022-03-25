@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
-import { IMoto } from 'pages/app/moto/[id]'
+import { IMoto } from 'types'
 import { numberWithCommas } from 'utils/number-helper'
+import _ from 'lodash'
 
 type MotoDetailsProps = {
   moto: IMoto
@@ -25,13 +26,13 @@ export const MotoDetails: React.FC<MotoDetailsProps> = (props) => {
           component="h4"
           sx={{ mb: 0 }}
         >
-          {moto.line}
+          {_.capitalize(moto.model)} - {_.upperCase(moto.licensePlate)}
         </Typography>
         <Typography variant="subtitle1" color="secondary">
-          {moto.brand}
+          {_.upperCase(moto.make)}
         </Typography>
         <Typography variant="subtitle2" color="secondary">
-          Model: {moto.year}
+          Model: {moto.yearModel}
         </Typography>
         <Box sx={{ my: 3 }} />
         <Typography variant="body1" color="text.secondary">
@@ -40,7 +41,7 @@ export const MotoDetails: React.FC<MotoDetailsProps> = (props) => {
         </Typography>
         <Typography variant="body1" color="text.secondary">
           Total Expenses:{' '}
-          <strong>${numberWithCommas(moto.total.toString())}</strong>
+          <strong>${numberWithCommas(moto?.total?.toString() || 0)}</strong>
         </Typography>
       </CardContent>
     </Card>

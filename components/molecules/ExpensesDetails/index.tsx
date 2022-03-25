@@ -1,9 +1,8 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import { PieChartFullOption } from '../PieChartFullOption'
 import AddIcon from '@mui/icons-material/Add'
-import LocalGasStationOutlinedIcon from '@mui/icons-material/LocalGasStationOutlined'
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
 import { Expense } from './Expense'
+import { useRouter } from 'next/router'
 
 type ExpensesDetailsProps = {
   pieChartData: {
@@ -18,9 +17,12 @@ type ExpensesDetailsProps = {
     amount: number
     description: string
   }[]
+  motoId?: string
 }
 
 export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
+  const router = useRouter()
+
   return (
     <Paper elevation={2} sx={{ padding: 3, borderRadius: '15px' }}>
       <Typography
@@ -73,7 +75,11 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
           </Typography>
         </Grid>
         <Grid item>
-          <Button variant="outlined" startIcon={<AddIcon />}>
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={() => router.push(`/app/moto/${props.motoId}/expense/new`)}
+          >
             Add Record
           </Button>
         </Grid>

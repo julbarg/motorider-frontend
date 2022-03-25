@@ -8,16 +8,8 @@ import { Dashboard } from 'components/molecules/Dashboard'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import _ from 'lodash'
 import { Moto } from 'components/molecules/Moto'
-
-export type IMoto = {
-  name: string
-  brand: string
-  line: string
-  image: string
-  km: number
-  total: number
-  year: number
-}
+import { IMoto } from 'types'
+import { connectToDB, moto } from 'db'
 
 type MotoPageProps = {
   session: Session
@@ -27,6 +19,7 @@ type MotoPageProps = {
 const MotoPage: NextPage<MotoPageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
+  const { moto } = props
 
   if (loading) {
     return null
@@ -36,7 +29,7 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
     return <SessionExpiredDialog onClick={() => router.push('/')} />
   }
 
-  const words = _.words(props.moto.name)
+  const words = _.words(moto.model)
   const secondTile = words.pop() || ''
   const initialTitle = words.join(' ')
 
@@ -54,40 +47,48 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
           secondTile={secondTile}
           subtitle="Check your expenses"
         />
-        <Moto moto={props.moto} />
+        <Moto moto={moto} />
       </Dashboard>
     </Container>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  let moto = {}
+  const session: any = await getSession(context)
 
   if (!session || !session.user) {
     return { props: {} }
   }
 
+  const { db } = await connectToDB()
+
   if (context?.params?.id) {
-    moto = {
-      id: context.params.id,
-      name: 'Naranja Mecanica',
-      brand: 'KTM',
-      line: 'Duke 390',
-      image:
-        'https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg',
-      km: 78950,
-      total: 1450258,
-      year: 2014,
+    const pId = context.params.id
+    let motoId: string
+    if (Array.isArray(pId) && pId.length > 0) {
+      motoId = pId[0]
+    } else {
+      motoId = pId as string
+    }
+
+    let motoResponse: IMoto = await moto.getMotoByIdAndUserId(
+      db,
+      session.user.id,
+      motoId
+    )
+    // TODO Dynamic Images
+    motoResponse.image =
+      'https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg'
+
+    return {
+      props: {
+        session,
+        moto: motoResponse,
+      },
     }
   }
 
-  return {
-    props: {
-      session,
-      moto,
-    },
-  }
+  return { props: {} }
 }
 
 export default MotoPage

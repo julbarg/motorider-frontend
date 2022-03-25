@@ -7,14 +7,18 @@ import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
 import { Dashboard } from 'components/molecules/Dashboard'
 import { MotosResult } from 'components/molecules/MotosResult'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
+import { IMoto } from 'types'
+import { moto, connectToDB } from 'db'
 
 type DashboardProps = {
   session: Session
+  motos: IMoto[]
 }
 
 const App: NextPage<DashboardProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
+  const { motos } = props
 
   if (loading) {
     return null
@@ -39,17 +43,28 @@ const App: NextPage<DashboardProps> = (props) => {
           subtitle="Welcome Back!"
           showBackButton={false}
         />
-        <MotosResult user={session?.user} />
+        <MotosResult motos={motos} />
       </Dashboard>
     </Container>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
+  const session: any = await getSession(context)
+
+  if (!session) {
+    return {
+      props: { session },
+    }
+  }
+
+  const { db } = await connectToDB()
+  const motos: IMoto[] = await moto.getMotos(db, session?.user?.id)
+
   return {
     props: {
       session,
+      motos,
     },
   }
 }

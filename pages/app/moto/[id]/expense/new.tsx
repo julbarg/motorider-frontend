@@ -10,13 +10,13 @@ import { CreateExpense } from 'components/molecules/CreateExpense'
 
 type AddNewExpensePageProps = {
   session: Session
-  idMoto: string
+  motoId: string
 }
 
 const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
-  const { idMoto } = props
+  const { motoId } = props
 
   if (loading) {
     return null
@@ -40,7 +40,7 @@ const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
           secondTile="Expense"
           subtitle="Register your expense to control your expenses"
         />
-        <CreateExpense idMoto={idMoto} />
+        <CreateExpense motoId={motoId} />
       </Dashboard>
     </Container>
   )
@@ -49,12 +49,10 @@ const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
 
-  console.log(context.params)
-
   return {
     props: {
       session,
-      idMoto: context.params?.id,
+      motoId: context.params?.id,
     },
   }
 }

@@ -2,6 +2,7 @@ import { Box, Button } from '@mui/material'
 import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { H1 } from './H1'
+import _ from 'lodash'
 
 type DashboardTitleProps = {
   initialTitle: string
@@ -19,9 +20,9 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <H1 color="secondary.main">
-            {props.initialTitle}{' '}
+            {_.capitalize(props.initialTitle)}{' '}
             <Box sx={{ color: 'primary.main' }} component="span">
-              {props.secondTile}
+              {_.capitalize(props.secondTile)}
             </Box>
           </H1>
           <Box sx={{ marginTop: '-5px' }}>{props.subtitle}</Box>

@@ -4,57 +4,40 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  Input,
-  InputLabel,
   MenuItem,
-  Select,
-  SelectChangeEvent,
   TextField,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { CategoryIcon } from 'components/atoms/CategoryIcon'
+import { useRouter } from 'next/router'
+import { categories } from 'data/categories'
+import { IExpense } from 'types'
 
 type CreateExpenseProps = {
-  idMoto: string
+  motoId: string
 }
 
-const defaultValues = {
+const defaultValues: IExpense = {
   description: '',
-  amount: '',
+  amount: 0,
   category: '',
   date: new Date(),
-  currentKm: '',
+  km: 0,
 }
-
-const categories = [
-  {
-    value: 'gas',
-    label: 'Gas',
-  },
-  {
-    value: 'garage',
-    label: 'Garage',
-  },
-]
 
 export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
-  const [categoryIcon, setIconCategoryIcon] = useState('default')
+  const { motoId } = props
+
+  const router = useRouter()
 
   useEffect(() => {}, [formValues.category])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    })
-  }
 
-  const handleSelectChange = (e: SelectChangeEvent<string>) => {
-    const { name, value } = e.target
     setFormValues({
       ...formValues,
       [name]: value,
@@ -70,9 +53,20 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
     }
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    console.log(formValues)
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/record/`, {
+      method: 'POST',
+      body: JSON.stringify({ ...formValues, motoId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    await res.json()
+
+    router.push(`/app/moto/${motoId}`)
   }
 
   return (
@@ -80,50 +74,44 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
       <form onSubmit={handleSubmit}>
         <Grid container flexDirection="row" my={1} spacing={3}>
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="description">Description</InputLabel>
-              <Input
-                id="description"
-                sx={{ px: 2 }}
-                required={true}
-                value={formValues.description}
-                onChange={handleInputChange}
-                name="description"
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="description"
+              required={true}
+              value={formValues.description}
+              onChange={handleInputChange}
+              name="description"
+              label="Description"
+            />
           </Grid>
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="amount">Amount</InputLabel>
-              <Input
-                id="amount"
-                sx={{ px: 2 }}
-                required={true}
-                value={formValues.amount}
-                onChange={handleInputChange}
-                name="amount"
-                type=""
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="amount"
+              required={true}
+              value={formValues.amount}
+              onChange={handleInputChange}
+              name="amount"
+              label="Amount"
+            />
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="category">Category</InputLabel>
-              <Select
-                name="category"
-                value={formValues.category}
-                onChange={handleSelectChange}
-                id="category"
-                label="category"
-                required={true}
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category.label} value={category.value}>
-                    {category.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              select
+              fullWidth
+              name="category"
+              value={formValues.category}
+              onChange={handleInputChange}
+              id="category"
+              label="Category"
+              required={true}
+            >
+              {Object.entries(categories).map(([key, obj]) => (
+                <MenuItem key={key} value={key}>
+                  {obj.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
@@ -142,19 +130,17 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="currentKm">Current Km</InputLabel>
-              <Input
-                id="currentKm"
-                aria-describedby="CurrentKm KM"
-                sx={{ px: 2 }}
-                required={true}
-                onChange={handleInputChange}
-                value={formValues.currentKm}
-                name="currentKm"
-                type="number"
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="currentKm"
+              aria-describedby="CurrentKm KM"
+              required={true}
+              onChange={handleInputChange}
+              value={formValues.km}
+              name="currentKm"
+              type="number"
+              label="Current Km"
+            />
           </Grid>
           <Grid item xs={6} textAlign="center">
             <CategoryIcon category={formValues.category} />

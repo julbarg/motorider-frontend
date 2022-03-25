@@ -1,22 +1,34 @@
-import LocalGasStationOutlinedIcon from '@mui/icons-material/LocalGasStationOutlined'
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
 import { Box } from '@mui/material'
+
+import ArticleTwoToneIcon from '@mui/icons-material/ArticleTwoTone'
+import LocalGasStationTwoToneIcon from '@mui/icons-material/LocalGasStationTwoTone'
+import ConstructionTwoToneIcon from '@mui/icons-material/ConstructionTwoTone'
+
+import { categories } from 'data/categories'
 
 type CategoryIconProps = {
   category: string
 }
 export const CategoryIcon: React.FC<CategoryIconProps> = (props) => {
   const icons: { [key: string]: JSX.Element } = {
-    gas: (
-      <LocalGasStationOutlinedIcon
+    ArticleTwoToneIcon: (
+      <ArticleTwoToneIcon sx={{ fontSize: 50, color: 'primary.main' }} />
+    ),
+    LocalGasStationTwoToneIcon: (
+      <LocalGasStationTwoToneIcon
         sx={{ fontSize: 50, color: 'primary.main' }}
       />
     ),
-    garage: <BuildOutlinedIcon sx={{ fontSize: 50, color: 'primary.main' }} />,
+    ConstructionTwoToneIcon: (
+      <ConstructionTwoToneIcon sx={{ fontSize: 50, color: 'primary.main' }} />
+    ),
   }
 
   const getIcon = () => {
-    return icons[props.category] ? icons[props.category] : null
+    const category = categories[props.category]
+    if (!category) return null
+    const iconComponent = category.iconComponent
+    return icons[iconComponent] ? icons[iconComponent] : null
   }
 
   return <Box>{getIcon()}</Box>

@@ -8,9 +8,12 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
 } from '@mui/material'
 import { User } from 'next-auth'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { IMoto } from 'types'
 
 type CreateMotoProps = {
   user?: User
@@ -21,20 +24,20 @@ type Line = {
   label: string
 }
 
-const defaultValues = {
-  name: '',
-  brand: '',
-  line: '',
-  cc: '',
-  initialKm: '',
-  year: '',
+const defaultValues: IMoto = {
+  make: '',
+  model: '',
+  engine: 0,
+  km: 0,
+  yearModel: 0,
+  licensePlate: '',
 }
 
-const brands = [
+const makes = [
   {
     value: 'ktm',
     label: 'KTM',
-    lines: [
+    models: [
       {
         value: 'duke-390',
         label: 'Duke 390',
@@ -44,7 +47,7 @@ const brands = [
   {
     value: 'yamaha',
     label: 'Yamaha',
-    lines: [
+    models: [
       {
         value: 'fz',
         label: 'FZ',
@@ -54,7 +57,7 @@ const brands = [
   {
     value: 'bmw',
     label: 'BMW',
-    lines: [
+    models: [
       {
         value: 'bmw-01',
         label: 'BMW 01',
@@ -64,7 +67,7 @@ const brands = [
   {
     value: 'ducati',
     label: 'Ducati',
-    lines: [
+    models: [
       {
         value: 'ducati-01',
         label: 'Ducati 01',
@@ -77,21 +80,23 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const [lineValues, setLineValues] = useState<Line[]>([])
 
+  const router = useRouter()
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target
+  //   setFormValues({
+  //     ...formValues,
+  //     [name]: value,
+  //   })
+  // }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    })
-  }
-
-  const handleSelectChange = (e: SelectChangeEvent<string>) => {
-    const { name, value } = e.target
-    if (name === 'brand') {
+    if (name === 'make') {
       setFormValues({
         ...formValues,
         [name]: value,
-        line: '',
+        model: '',
       })
     } else {
       setFormValues({
@@ -101,118 +106,121 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
     }
   }
 
-  // TODO Define e type
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    console.log(formValues)
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/moto/`, {
+      method: 'POST',
+      body: JSON.stringify({ ...formValues }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    await res.json()
+
+    router.push('/app')
   }
 
   useEffect(() => {
-    const brand = brands.find((brand) => brand.value === formValues.brand)
-    if (brand?.lines && brand!.lines!.length > 0) {
-      setLineValues(brand.lines)
+    const make = makes.find((make) => make.value === formValues.make)
+    if (make?.models && make!.models!.length > 0) {
+      setLineValues(make.models)
     }
-  }, [formValues.brand])
+  }, [formValues.make])
 
   return (
     <Box display="flex" flexDirection="column">
       <form onSubmit={handleSubmit}>
         <Grid container flexDirection="row" my={1} spacing={3}>
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="name">Name</InputLabel>
-              <Input
-                id="name"
-                sx={{ px: 2 }}
-                required={true}
-                value={formValues.name}
-                onChange={handleInputChange}
-                name="name"
-              />
-            </FormControl>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              name="make"
+              select
+              value={formValues.make}
+              onChange={handleInputChange}
+              id="make"
+              label="Make"
+              required={true}
+            >
+              {makes.map((make) => (
+                <MenuItem key={make.label} value={make.value}>
+                  {make.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="brand">Brand</InputLabel>
-              <Select
-                name="brand"
-                value={formValues.brand}
-                onChange={handleSelectChange}
-                id="brand"
-                label="Brand"
-                required={true}
-              >
-                {brands.map((brand) => (
-                  <MenuItem key={brand.label} value={brand.value}>
-                    {brand.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              name="model"
+              select
+              value={formValues.model}
+              onChange={handleInputChange}
+              id="model"
+              label="Model"
+              required={true}
+            >
+              {lineValues.map((line) => (
+                <MenuItem key={line.label} value={line.value}>
+                  {line.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="line">Line</InputLabel>
-              <Select
-                name="line"
-                value={formValues.line}
-                onChange={handleSelectChange}
-                id="line"
-                label="Line"
-                required={true}
-              >
-                {lineValues.map((line) => (
-                  <MenuItem key={line.label} value={line.value}>
-                    {line.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              id="engine"
+              label="Engine"
+              aria-describedby="engine"
+              required={true}
+              onChange={handleInputChange}
+              value={formValues.engine}
+              name="engine"
+              helperText="cc"
+              type="number"
+            />
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="cc">Cc</InputLabel>
-              <Input
-                id="cc"
-                aria-describedby="cc"
-                sx={{ px: 2 }}
-                required={true}
-                onChange={handleInputChange}
-                value={formValues.cc}
-                name="cc"
-                type="number"
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="km"
+              label="Initial KM"
+              aria-describedby="KM"
+              required={true}
+              onChange={handleInputChange}
+              value={formValues.km}
+              name="km"
+              type="number"
+            />
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="initialKm">Initial KM</InputLabel>
-              <Input
-                id="initialKm"
-                aria-describedby="Initial KM"
-                sx={{ px: 2 }}
-                required={true}
-                onChange={handleInputChange}
-                value={formValues.initialKm}
-                name="initialKm"
-                type="number"
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="licensePlate"
+              label="License Plate"
+              aria-describedby="License Plate"
+              required={true}
+              onChange={handleInputChange}
+              value={formValues.licensePlate}
+              name="licensePlate"
+              helperText="MWM 874"
+            />
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="year">Year</InputLabel>
-              <Input
-                id="year"
-                aria-describedby="Year"
-                sx={{ px: 2 }}
-                required={true}
-                onChange={handleInputChange}
-                value={formValues.year}
-                name="year"
-                type="number"
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              id="yearModel"
+              label="Year"
+              aria-describedby="Year"
+              required={true}
+              onChange={handleInputChange}
+              value={formValues.yearModel}
+              name="yearModel"
+              type="number"
+            />
           </Grid>
 
           <Grid item xs={12} my={3}>
