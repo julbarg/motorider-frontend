@@ -58,9 +58,6 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
             >
               Add Motor Bike
             </NavLink>
-            <NavLink icon={manageAccountsIcon} href="/app/">
-              Profile
-            </NavLink>
           </Grid>
         </Grid>
       )}

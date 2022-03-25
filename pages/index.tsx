@@ -76,7 +76,7 @@ const Home: NextPage = () => {
           </Grid>
 
           <Box color="primary.main" fontSize={12} py={2}>
-            Design By <strong>Julian Barragan</strong>
+            Design By <strong>Julian Barragan</strong>0
           </Box>
         </Grid>
       </Grid>

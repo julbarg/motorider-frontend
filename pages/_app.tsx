@@ -22,7 +22,7 @@ export const MotoRiderApp = ({
 }: AppPropsEmotion) => {
   return (
     <>
-      <Provider session={pageProps}>
+      <Provider session={pageProps.session}>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

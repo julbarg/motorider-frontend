@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   Grid,
   Input,
   InputLabel,
@@ -10,11 +11,10 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalGasStationOutlinedIcon from '@mui/icons-material/LocalGasStationOutlined'
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
+import { CategoryIcon } from 'components/atoms/CategoryIcon'
 
 type CreateExpenseProps = {
   idMoto: string
@@ -41,6 +41,9 @@ const categories = [
 
 export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
+  const [categoryIcon, setIconCategoryIcon] = useState('default')
+
+  useEffect(() => {}, [formValues.category])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -74,10 +77,6 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
 
   return (
     <Box display="flex" flexDirection="column">
-      <LocalGasStationOutlinedIcon
-        sx={{ fontSize: 50, color: 'primary.main' }}
-      />
-      <BuildOutlinedIcon sx={{ fontSize: 50, color: 'primary.main' }} />
       <form onSubmit={handleSubmit}>
         <Grid container flexDirection="row" my={1} spacing={3}>
           <Grid item xs={12}>
@@ -136,6 +135,9 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
                   onChange={handleDateChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
+                <FormHelperText id="component-helper-text">
+                  Some important helper text
+                </FormHelperText>
               </LocalizationProvider>
             </FormControl>
           </Grid>
@@ -143,7 +145,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
             <FormControl fullWidth>
               <InputLabel htmlFor="currentKm">Current Km</InputLabel>
               <Input
-                id="initialKm"
+                id="currentKm"
                 aria-describedby="CurrentKm KM"
                 sx={{ px: 2 }}
                 required={true}
@@ -154,10 +156,8 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={6} justifySelf="flex-end">
-            <LocalGasStationOutlinedIcon
-              sx={{ fontSize: 50, color: 'primary.main' }}
-            />
+          <Grid item xs={6} textAlign="center">
+            <CategoryIcon category={formValues.category} />
           </Grid>
 
           <Grid item xs={12} my={3}>

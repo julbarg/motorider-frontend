@@ -1,12 +1,11 @@
 import { Box, Paper, Typography } from '@mui/material'
 import { grey } from '@mui/material/colors'
-import LocalGasStationOutlinedIcon from '@mui/icons-material/LocalGasStationOutlined'
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
-import { numberWithCommas } from 'helpers/number-helper'
+import { numberWithCommas } from 'utils/number-helper'
+import { CategoryIcon } from 'components/atoms/CategoryIcon'
 
 type ExpenseProps = {
   expense: {
-    kind: string
+    category: string
     date: string
     amount: number
     description: string
@@ -15,15 +14,6 @@ type ExpenseProps = {
 
 export const Expense: React.FC<ExpenseProps> = (props) => {
   const { expense } = props
-  // TODO to general site to reuse
-  const icons: { [key: string]: JSX.Element } = {
-    gas: (
-      <LocalGasStationOutlinedIcon
-        sx={{ fontSize: 50, color: 'primary.main' }}
-      />
-    ),
-    repair: <BuildOutlinedIcon sx={{ fontSize: 50, color: 'primary.main' }} />,
-  }
 
   return (
     <Paper
@@ -46,7 +36,7 @@ export const Expense: React.FC<ExpenseProps> = (props) => {
           px: 4,
         }}
       >
-        {icons[expense.kind]}
+        <CategoryIcon category={expense.category} />
       </Box>
       <Box
         sx={{

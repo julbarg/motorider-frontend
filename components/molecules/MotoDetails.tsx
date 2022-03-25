@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
 import { IMoto } from 'pages/app/moto/[id]'
-import { numberWithCommas } from 'helpers/number-helper'
+import { numberWithCommas } from 'utils/number-helper'
 
 type MotoDetailsProps = {
   moto: IMoto

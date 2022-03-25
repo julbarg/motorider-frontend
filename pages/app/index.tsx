@@ -37,6 +37,7 @@ const App: NextPage<DashboardProps> = (props) => {
           initialTitle="Hi"
           secondTile={session?.user?.name || ''}
           subtitle="Welcome Back!"
+          showBackButton={false}
         />
         <MotosResult user={session?.user} />
       </Dashboard>

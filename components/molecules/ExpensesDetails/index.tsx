@@ -1,8 +1,6 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import { PieChartFullOption } from '../PieChartFullOption'
 import AddIcon from '@mui/icons-material/Add'
-import { grey } from '@mui/material/colors'
-import { numberWithCommas } from 'helpers/number-helper'
 import LocalGasStationOutlinedIcon from '@mui/icons-material/LocalGasStationOutlined'
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
 import { Expense } from './Expense'
@@ -15,18 +13,11 @@ type ExpensesDetailsProps = {
   }[]
 
   expenses: {
-    kind: string
+    category: string
     date: string
     amount: number
     description: string
   }[]
-}
-
-const icons: { [key: string]: JSX.Element } = {
-  gas: (
-    <LocalGasStationOutlinedIcon sx={{ fontSize: 50, color: 'primary.main' }} />
-  ),
-  repair: <BuildOutlinedIcon sx={{ fontSize: 50, color: 'primary.main' }} />,
 }
 
 export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
