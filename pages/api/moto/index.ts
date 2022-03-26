@@ -19,4 +19,10 @@ handler.post(async (req: Request, res) => {
   res.send({ data: newMoto })
 })
 
+handler.put(async (req: Request, res) => {
+  const updateMoto = await moto.updateMotoKm(req.db, req.body.userId, req.body.motoId, req.body.km)
+
+  res.send({ data: updateMoto })
+})
+
 export default handler

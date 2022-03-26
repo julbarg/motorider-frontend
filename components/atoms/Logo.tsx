@@ -1,5 +1,4 @@
 import { Box, Link, TypographyProps } from '@mui/material'
-import { url } from 'inspector'
 
 type LogoProps = {
   size?: 'small' | 'normal' | 'large'

@@ -1,15 +1,9 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from '@mui/material'
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { IMoto } from 'types'
 import { numberWithCommas } from 'utils/number-helper'
 import _ from 'lodash'
+import { makes } from 'data/make'
 
 type CardMotoProps = {
   moto: IMoto
@@ -23,15 +17,15 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
     <Card
       sx={{
         width: 240,
-        minHeight: 320,
+        minHeight: 340,
         cursor: 'pointer',
       }}
       onClick={() => router.push(`/app/moto/${moto._id}`)}
     >
       <CardMedia
         component="img"
-        height="140"
-        image="https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg"
+        height="160"
+        image={`/images/${moto.make}-${moto.model}.png`}
         alt="Duke 390"
         sx={{
           objectFit: 'cover',
@@ -44,17 +38,22 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
           gutterBottom
           variant="h6"
           component="h4"
+          mb={0}
         >
-          {_.capitalize(moto.model)} - {_.upperCase(moto.licensePlate)}
+          {
+            makes
+              .find((make) => make.value === moto.make)
+              ?.models.find((model) => model.value === moto.model)?.label
+          }
+        </Typography>
+        <Typography variant="subtitle2" color="primary" fontFamily="Anton">
+          {_.upperCase(moto.licensePlate)}
         </Typography>
         <Typography variant="body2" color="secondary">
           {_.capitalize(moto.make)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {numberWithCommas(moto.km.toString())} Km
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Total Expenses: <strong>$1.298.254</strong>
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>

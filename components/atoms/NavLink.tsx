@@ -1,5 +1,5 @@
 import { Box, Link as MUILink } from '@mui/material'
-import { grey, red } from '@mui/material/colors'
+import { grey } from '@mui/material/colors'
 import NextLink from 'next/link'
 
 type NavLinkProps = {

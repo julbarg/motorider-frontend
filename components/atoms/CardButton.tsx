@@ -10,7 +10,7 @@ export const CardButton: React.FC<CardButtonProps> = (props) => {
   return (
     <Card
       sx={{
-        height: 320,
+        height: 340,
         width: 240,
       }}
     >

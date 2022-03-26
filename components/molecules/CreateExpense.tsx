@@ -1,22 +1,15 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  MenuItem,
-  TextField,
-} from '@mui/material'
+import { Box, Button, FormControl, FormHelperText, Grid, MenuItem, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { CategoryIcon } from 'components/atoms/CategoryIcon'
 import { useRouter } from 'next/router'
 import { categories } from 'data/categories'
-import { IExpense } from 'types'
+import { IExpense, IMoto } from 'types'
+import { useSession } from 'next-auth/client'
 
 type CreateExpenseProps = {
-  motoId: string
+  moto: IMoto
 }
 
 const defaultValues: IExpense = {
@@ -29,18 +22,21 @@ const defaultValues: IExpense = {
 
 export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
-  const { motoId } = props
+  const [session] = useSession()
+  const { moto } = props
 
   const router = useRouter()
 
-  useEffect(() => {}, [formValues.category])
+  useEffect(() => {
+    setFormValues((previousState) => ({ ...previousState, km: moto.km }))
+  }, [moto.km])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value, valueAsNumber, type } = e.target
 
     setFormValues({
       ...formValues,
-      [name]: value,
+      [name]: type === 'number' ? valueAsNumber : value,
     })
   }
 
@@ -56,9 +52,9 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/record/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/expense/`, {
       method: 'POST',
-      body: JSON.stringify({ ...formValues, motoId }),
+      body: JSON.stringify({ ...formValues, motoId: moto._id }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -66,7 +62,19 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
 
     await res.json()
 
-    router.push(`/app/moto/${motoId}`)
+    await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/moto/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        userId: (session?.user as any)?.id,
+        motoId: moto._id,
+        km: formValues.km,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    router.push(`/app/moto/${moto._id}`)
   }
 
   return (
@@ -86,6 +94,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              type="number"
               fullWidth
               id="amount"
               required={true}
@@ -93,6 +102,9 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
               onChange={handleInputChange}
               name="amount"
               label="Amount"
+              InputProps={{
+                type: 'number',
+              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -132,12 +144,12 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="currentKm"
+              id="km"
               aria-describedby="CurrentKm KM"
               required={true}
               onChange={handleInputChange}
               value={formValues.km}
-              name="currentKm"
+              name="km"
               type="number"
               label="Current Km"
             />

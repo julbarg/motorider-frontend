@@ -1,6 +1,6 @@
 import * as moto from './moto'
-import * as record from './expense'
+import * as expense from './expense'
 import * as user from './user'
 
 export { connectToDB } from './connect'
-export { moto, record, user }
+export { moto, expense, user }

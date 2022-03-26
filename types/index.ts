@@ -1,5 +1,7 @@
+import { Category } from '@mui/icons-material'
 import { Db, MongoClient } from 'mongodb'
 import { NextApiRequest } from 'next'
+import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes'
 
 export interface User {
   name?: string | null
@@ -22,7 +24,6 @@ export interface IMoto {
   km: number
   yearModel: number
   licensePlate: string
-  image?: string
   userId?: string
 }
 
@@ -40,4 +41,9 @@ export interface Request extends NextApiRequest {
   db: Db
   dbClient: MongoClient
   user: { email: string; id: string }
+}
+
+export interface IExpensesByCategory {
+  _id: string
+  total: number
 }

@@ -1,19 +1,10 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from '@mui/material'
+import { Box, Button, Grid, MenuItem, TextField } from '@mui/material'
+import { makes } from 'data/make'
 import { User } from 'next-auth'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { IMoto } from 'types'
+import InputAdornment from '@mui/material/InputAdornment'
 
 type CreateMotoProps = {
   user?: User
@@ -33,65 +24,14 @@ const defaultValues: IMoto = {
   licensePlate: '',
 }
 
-const makes = [
-  {
-    value: 'ktm',
-    label: 'KTM',
-    models: [
-      {
-        value: 'duke-390',
-        label: 'Duke 390',
-      },
-    ],
-  },
-  {
-    value: 'yamaha',
-    label: 'Yamaha',
-    models: [
-      {
-        value: 'fz',
-        label: 'FZ',
-      },
-    ],
-  },
-  {
-    value: 'bmw',
-    label: 'BMW',
-    models: [
-      {
-        value: 'bmw-01',
-        label: 'BMW 01',
-      },
-    ],
-  },
-  {
-    value: 'ducati',
-    label: 'Ducati',
-    models: [
-      {
-        value: 'ducati-01',
-        label: 'Ducati 01',
-      },
-    ],
-  },
-]
-
 export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const [lineValues, setLineValues] = useState<Line[]>([])
 
   const router = useRouter()
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target
-  //   setFormValues({
-  //     ...formValues,
-  //     [name]: value,
-  //   })
-  // }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value, valueAsNumber, type } = e.target
     if (name === 'make') {
       setFormValues({
         ...formValues,
@@ -101,7 +41,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
     } else {
       setFormValues({
         ...formValues,
-        [name]: value,
+        [name]: type === 'number' ? valueAsNumber : value,
       })
     }
   }
@@ -179,8 +119,10 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
               onChange={handleInputChange}
               value={formValues.engine}
               name="engine"
-              helperText="cc"
               type="number"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">cc</InputAdornment>,
+              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -194,6 +136,9 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
               value={formValues.km}
               name="km"
               type="number"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">km</InputAdornment>,
+              }}
             />
           </Grid>
           <Grid item xs={6}>

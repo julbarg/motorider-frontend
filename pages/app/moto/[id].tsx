@@ -8,18 +8,22 @@ import { Dashboard } from 'components/molecules/Dashboard'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import _ from 'lodash'
 import { Moto } from 'components/molecules/Moto'
-import { IMoto } from 'types'
-import { connectToDB, moto } from 'db'
+import { IExpense, IExpensesByCategory, IMoto } from 'types'
+import { connectToDB, expense, moto } from 'db'
+import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes'
+import { categories } from 'data/categories'
 
 type MotoPageProps = {
   session: Session
   moto: IMoto
+  expenses: IExpense[]
+  pieChartData: DataEntry[]
 }
 
 const MotoPage: NextPage<MotoPageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
-  const { moto } = props
+  const { moto, expenses, pieChartData } = props
 
   if (loading) {
     return null
@@ -47,7 +51,7 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
           secondTile={secondTile}
           subtitle="Check your expenses"
         />
-        <Moto moto={moto} />
+        <Moto expenses={expenses} moto={moto} pieChartData={pieChartData} />
       </Dashboard>
     </Container>
   )
@@ -71,19 +75,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       motoId = pId as string
     }
 
-    let motoResponse: IMoto = await moto.getMotoByIdAndUserId(
+    let motoResponse: IMoto = await moto.getMotoByIdAndUserId(db, session.user.id, motoId)
+    let expensesResponse: IExpense[] = await expense.getExpensesByMotoIdAndUserId(
       db,
       session.user.id,
       motoId
     )
-    // TODO Dynamic Images
-    motoResponse.image =
-      'https://www.motorcycle.com/blog/wp-content/uploads/2017/04/041017-2017-ktm-390-duke-f.jpg'
+
+    let expensesByCategoryResponse: IExpensesByCategory[] = await expense.groupByCategory(
+      db,
+      session.user.id,
+      motoId
+    )
+
+    const colorsPieChart = ['#009688', '#f44336', '#9c27b0', '#3f51b5', '#ff5722']
+
+    const pieChartData: DataEntry[] = expensesByCategoryResponse.map(
+      (category: IExpensesByCategory, index) => ({
+        title: categories[category._id as string].label,
+        value: category.total,
+        color: colorsPieChart[index],
+      })
+    )
 
     return {
       props: {
         session,
         moto: motoResponse,
+        expenses: expensesResponse,
+        pieChartData,
       },
     }
   }

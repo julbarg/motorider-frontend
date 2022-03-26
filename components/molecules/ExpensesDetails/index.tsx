@@ -1,37 +1,61 @@
-import { Box, Button, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Grid, Pagination, Paper, Typography } from '@mui/material'
 import { PieChartFullOption } from '../PieChartFullOption'
 import AddIcon from '@mui/icons-material/Add'
 import { Expense } from './Expense'
 import { useRouter } from 'next/router'
+import { IExpense } from 'types'
+import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes'
+import { numberWithCommas } from 'utils/number-helper'
+import { useEffect, useState } from 'react'
+import _ from 'lodash'
 
 type ExpensesDetailsProps = {
-  pieChartData: {
-    title: string
-    value: number
-    color: string
-  }[]
-
-  expenses: {
-    category: string
-    date: string
-    amount: number
-    description: string
-  }[]
+  pieChartData: DataEntry[]
+  expenses: IExpense[]
   motoId?: string
 }
 
+const recordsPerPage = 4
+
 export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
+  const [currentExpenses, setCurrentExpenses] = useState<IExpense[]>([])
+  const { pieChartData, expenses, motoId } = props
   const router = useRouter()
+
+  useEffect(() => {
+    setCurrentExpenses(_.take(expenses, recordsPerPage))
+  }, [expenses])
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const start = (value - 1) * recordsPerPage
+    const end = start + recordsPerPage > expenses.length ? expenses.length : start + recordsPerPage
+    setCurrentExpenses(_.slice(expenses, start, end))
+  }
+
+  const renderPieChartData = () =>
+    pieChartData
+      .sort((a, b) => b.value - a.value)
+      .map((item, key) => (
+        <Box key={key} display="flex" my={2}>
+          <Box
+            sx={{
+              width: '25px',
+              height: '25px',
+              borderRadius: '50%',
+              backgroundColor: item.color,
+            }}
+          />
+          <Box px={2}>
+            <Typography variant="body1" color="text.secondary">
+              {item.title}: <strong>${numberWithCommas(item.value.toString())}</strong>
+            </Typography>
+          </Box>
+        </Box>
+      ))
 
   return (
     <Paper elevation={2} sx={{ padding: 3, borderRadius: '15px' }}>
-      <Typography
-        fontFamily="Anton"
-        color="secondary"
-        gutterBottom
-        variant="h5"
-        component="h4"
-      >
+      <Typography fontFamily="Anton" color="secondary" gutterBottom variant="h5" component="h4">
         Expenses{' '}
         <Box component="span" color="primary.main">
           Details
@@ -39,26 +63,10 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
       </Typography>
       <Grid container justifyContent="space-between">
         <Grid item xs={4}>
-          <PieChartFullOption data={props.pieChartData} />
+          <PieChartFullOption data={pieChartData} />
         </Grid>
         <Grid item xs={7} px={5} py={2}>
-          {props.pieChartData
-            .sort((a, b) => b.value - a.value)
-            .map((item, key) => {
-              return (
-                <Box key={key} display="flex" my={2}>
-                  <Box
-                    sx={{
-                      width: '25px',
-                      height: '25px',
-                      borderRadius: '50%',
-                      backgroundColor: item.color,
-                    }}
-                  />
-                  <Box px={2}>{item.title}</Box>
-                </Box>
-              )
-            })}
+          {renderPieChartData()}
         </Grid>
       </Grid>
       <Grid container justifyContent="space-between" mt={3}>
@@ -78,20 +86,27 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
           <Button
             variant="outlined"
             startIcon={<AddIcon />}
-            onClick={() => router.push(`/app/moto/${props.motoId}/expense/new`)}
+            onClick={() => router.push(`/app/moto/${motoId}/expense/new`)}
           >
-            Add Record
+            Add Expense
           </Button>
         </Grid>
       </Grid>
       <Box my={2}>
         <Grid container spacing={5} alignItems="center">
-          {props.expenses.map((expense, key) => (
+          {currentExpenses.map((expense, key) => (
             <Grid item key={key} xs={6}>
               <Expense expense={expense} />
             </Grid>
           ))}
         </Grid>
+        <Box display="flex" justifyContent="center" my={3}>
+          <Pagination
+            count={Math.ceil(expenses.length / recordsPerPage)}
+            color="primary"
+            onChange={handlePageChange}
+          />
+        </Box>
       </Box>
     </Paper>
   )

@@ -1,16 +1,16 @@
-import { Box, Fade, Grid, Grow, Slide, Zoom } from '@mui/material'
+import { Box, Fade, Grid } from '@mui/material'
 import { CardButton } from 'components/atoms/CardButton'
 import { H2 } from 'components/atoms/H2'
-import { IMoto, User } from 'types'
+import { IMoto } from 'types'
 import { CardMoto } from './CardMoto'
 import AddIcon from '@mui/icons-material/Add'
 import { useRouter } from 'next/router'
 
-type MotosResultProps = {
+type MotoListProps = {
   motos: IMoto[]
 }
 
-export const MotosResult: React.FC<MotosResultProps> = (props) => {
+export const MotoList: React.FC<MotoListProps> = (props) => {
   const addIcon = <AddIcon color="primary" fontSize="large" />
   const router = useRouter()
 

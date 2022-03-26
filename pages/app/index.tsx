@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Session } from 'next-auth'
 import { SessionExpiredDialog } from 'components/atoms/SessionExpiredDialog'
 import { Dashboard } from 'components/molecules/Dashboard'
-import { MotosResult } from 'components/molecules/MotosResult'
+import { MotoList } from 'components/molecules/MotoList'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { IMoto } from 'types'
 import { moto, connectToDB } from 'db'
@@ -43,7 +43,7 @@ const App: NextPage<DashboardProps> = (props) => {
           subtitle="Welcome Back!"
           showBackButton={false}
         />
-        <MotosResult motos={motos} />
+        <MotoList motos={motos} />
       </Dashboard>
     </Container>
   )

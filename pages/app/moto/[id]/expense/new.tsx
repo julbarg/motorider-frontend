@@ -7,16 +7,18 @@ import { useRouter } from 'next/router'
 import { Dashboard } from 'components/molecules/Dashboard'
 import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { CreateExpense } from 'components/molecules/CreateExpense'
+import { connectToDB, moto } from 'db'
+import { IMoto } from 'types'
 
 type AddNewExpensePageProps = {
   session: Session
-  motoId: string
+  moto: IMoto
 }
 
 const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
-  const { motoId } = props
+  const { moto } = props
 
   if (loading) {
     return null
@@ -40,19 +42,43 @@ const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
           secondTile="Expense"
           subtitle="Register your expense to control your expenses"
         />
-        <CreateExpense motoId={motoId} />
+        <CreateExpense moto={moto} />
       </Dashboard>
     </Container>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
+  const session: any = await getSession(context)
+
+  if (!session || !session.user) {
+    return { props: {} }
+  }
+
+  const { db } = await connectToDB()
+
+  if (context?.params?.id) {
+    const pId = context.params.id
+    let motoId: string
+    if (Array.isArray(pId) && pId.length > 0) {
+      motoId = pId[0]
+    } else {
+      motoId = pId as string
+    }
+
+    let motoResponse: IMoto = await moto.getMotoByIdAndUserId(db, session.user.id, motoId)
+
+    return {
+      props: {
+        session,
+        moto: motoResponse,
+      },
+    }
+  }
 
   return {
     props: {
       session,
-      motoId: context.params?.id,
     },
   }
 }

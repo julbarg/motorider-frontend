@@ -2,23 +2,41 @@ import { Db } from 'mongodb'
 import { nanoid } from 'nanoid'
 import { IExpense } from 'types'
 
-export const getExpensesByMoto = async (
+export const getExpensesByMotoIdAndUserId = async (
   db: Db,
   userId: string,
   motoId: string
 ) => {
-  return db.collection('records').find({ motoId, userId }).toArray()
+  return db.collection('expenses').find({ motoId, userId }).toArray()
 }
 
-export const createRecord = async (db: Db, record: IExpense) => {
-  const newRecord = await db
-    .collection('records')
+export const groupByCategory = async (
+  db: Db,
+  userId: string,
+  motoId: string
+) => {
+  return db
+    .collection('expenses')
+    .aggregate([
+      {
+        $match: { userId, motoId },
+      },
+      {
+        $group: { _id: '$category', total: { $sum: '$amount' } },
+      },
+    ])
+    .toArray()
+}
+
+export const createExpenses = async (db: Db, expense: IExpense) => {
+  const newExpense = await db
+    .collection('expenses')
     .insertOne({
       _id: nanoid(12),
-      ...record,
+      ...expense,
       createdAt: new Date().toDateString(),
     })
     .then(({ ops }) => ops[0])
 
-  return newRecord
+  return newExpense
 }

@@ -1,4 +1,4 @@
-import { Box, Grid, styled } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { Logo } from 'components/atoms/Logo'
 import { User } from 'types'
 import Image from 'next/image'
@@ -17,7 +17,6 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
   const { user } = props
 
   const twoWheelerIcon = <TwoWheelerIcon fontSize="small" />
-  const manageAccountsIcon = <ManageAccountsIcon fontSize="small" />
   const addCircleOutlineIcon = <AddCircleOutlineIcon fontSize="small" />
 
   return (
@@ -26,13 +25,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
       {user?.image && (
         <Grid container my={2} flexDirection="column" alignItems="center">
           <Grid item>
-            <Image
-              className="avatar"
-              alt="Avatar"
-              src={user.image}
-              width={120}
-              height={120}
-            />
+            <Image className="avatar" alt="Avatar" src={user.image} width={120} height={120} />
             <style jsx global>{`
               .avatar {
                 border-radius: 50%;
@@ -44,11 +37,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = (props) => {
             {user.name}
           </Grid>
           <Grid my={2} alignSelf="flex-start" sx={{ width: '100%' }}>
-            <NavLink
-              icon={twoWheelerIcon}
-              href="/app"
-              active={router.asPath === '/app'}
-            >
+            <NavLink icon={twoWheelerIcon} href="/app" active={router.asPath === '/app'}>
               Motorbikes
             </NavLink>
             <NavLink

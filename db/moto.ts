@@ -15,12 +15,12 @@ export const createMoto = async (db: Db, moto: IMoto) => {
   return newMoto
 }
 
-export const getMotoByIdAndUserId = async (
-  db: Db,
-  userId: string,
-  motoId: string
-) => {
+export const getMotoByIdAndUserId = async (db: Db, userId: string, motoId: string) => {
   return await db.collection('motos').findOne({ userId, _id: motoId })
+}
+
+export const updateMotoKm = async (db: Db, userId: string, motoId: string, km: number) => {
+  return await db.collection('motos').updateOne({ _id: motoId, userId }, { $set: { km } })
 }
 
 export const getMotos = async (db: Db, userId: string) => {
