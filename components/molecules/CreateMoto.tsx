@@ -2,10 +2,14 @@ import { Box, Button, Fade, FormControl, Grid, MenuItem, TextField } from '@mui/
 import { makes } from 'data/make'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { IMoto } from 'types'
+import { IMoto, User } from 'types'
 import InputAdornment from '@mui/material/InputAdornment'
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
+
+type CreateMotoProps = {
+  user?: User
+}
 
 type Line = {
   value: string
@@ -21,7 +25,7 @@ const defaultValues: IMoto = {
   licensePlate: '',
 }
 
-export const CreateMoto: React.FC = (props) => {
+export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const [lineValues, setLineValues] = useState<Line[]>([])
   const [yearModelDate, setYearModelDate] = useState(new Date())
