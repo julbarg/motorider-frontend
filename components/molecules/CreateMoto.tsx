@@ -1,14 +1,11 @@
-import { Box, Button, Grid, MenuItem, TextField } from '@mui/material'
+import { Box, Button, Fade, FormControl, Grid, MenuItem, TextField } from '@mui/material'
 import { makes } from 'data/make'
-import { User } from 'next-auth'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { IMoto } from 'types'
 import InputAdornment from '@mui/material/InputAdornment'
-
-type CreateMotoProps = {
-  user?: User
-}
+import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
 
 type Line = {
   value: string
@@ -20,29 +17,43 @@ const defaultValues: IMoto = {
   model: '',
   engine: 0,
   km: 0,
-  yearModel: 0,
+  yearModel: 2022,
   licensePlate: '',
 }
 
-export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
+export const CreateMoto: React.FC = (props) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const [lineValues, setLineValues] = useState<Line[]>([])
+  const [yearModelDate, setYearModelDate] = useState(new Date())
 
   const router = useRouter()
+
+  useEffect(() => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      yearModel: yearModelDate.getFullYear(),
+    }))
+  }, [yearModelDate])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, valueAsNumber, type } = e.target
     if (name === 'make') {
-      setFormValues({
-        ...formValues,
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
         [name]: value,
         model: '',
-      })
+      }))
     } else {
-      setFormValues({
-        ...formValues,
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
         [name]: type === 'number' ? valueAsNumber : value,
-      })
+      }))
+    }
+  }
+
+  const handleDateChange = (newValue: Date | null) => {
+    if (newValue) {
+      setYearModelDate(newValue)
     }
   }
 
@@ -70,112 +81,115 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   }, [formValues.make])
 
   return (
-    <Box display="flex" flexDirection="column">
-      <form onSubmit={handleSubmit}>
-        <Grid container flexDirection="row" my={1} spacing={3}>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              name="make"
-              select
-              value={formValues.make}
-              onChange={handleInputChange}
-              id="make"
-              label="Make"
-              required={true}
-            >
-              {makes.map((make) => (
-                <MenuItem key={make.label} value={make.value}>
-                  {make.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              name="model"
-              select
-              value={formValues.model}
-              onChange={handleInputChange}
-              id="model"
-              label="Model"
-              required={true}
-            >
-              {lineValues.map((line) => (
-                <MenuItem key={line.label} value={line.value}>
-                  {line.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="engine"
-              label="Engine"
-              aria-describedby="engine"
-              required={true}
-              onChange={handleInputChange}
-              value={formValues.engine}
-              name="engine"
-              type="number"
-              InputProps={{
-                endAdornment: <InputAdornment position="start">cc</InputAdornment>,
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="km"
-              label="Initial KM"
-              aria-describedby="KM"
-              required={true}
-              onChange={handleInputChange}
-              value={formValues.km}
-              name="km"
-              type="number"
-              InputProps={{
-                endAdornment: <InputAdornment position="start">km</InputAdornment>,
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="licensePlate"
-              label="License Plate"
-              aria-describedby="License Plate"
-              required={true}
-              onChange={handleInputChange}
-              value={formValues.licensePlate}
-              name="licensePlate"
-              helperText="MWM 874"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="yearModel"
-              label="Year"
-              aria-describedby="Year"
-              required={true}
-              onChange={handleInputChange}
-              value={formValues.yearModel}
-              name="yearModel"
-              type="number"
-            />
-          </Grid>
+    <Fade in={true} timeout={1000}>
+      <Box display="flex" flexDirection="column">
+        <form onSubmit={handleSubmit}>
+          <Grid container flexDirection="row" my={1} spacing={3}>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                name="make"
+                select
+                value={formValues.make}
+                onChange={handleInputChange}
+                id="make"
+                label="Make"
+                required={true}
+              >
+                {makes.map((make) => (
+                  <MenuItem key={make.label} value={make.value}>
+                    {make.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                name="model"
+                select
+                value={formValues.model}
+                onChange={handleInputChange}
+                id="model"
+                label="Model"
+                required={true}
+              >
+                {lineValues.map((line) => (
+                  <MenuItem key={line.label} value={line.value}>
+                    {line.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                id="engine"
+                label="Engine"
+                aria-describedby="engine"
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.engine}
+                name="engine"
+                type="number"
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">cc</InputAdornment>,
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                id="km"
+                label="Initial KM"
+                aria-describedby="KM"
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.km}
+                name="km"
+                type="number"
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">km</InputAdornment>,
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                id="licensePlate"
+                label="License Plate"
+                aria-describedby="License Plate"
+                required={true}
+                onChange={handleInputChange}
+                value={formValues.licensePlate}
+                name="licensePlate"
+                helperText="MWM 874"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Year Model"
+                    inputFormat="yyyy"
+                    value={yearModelDate}
+                    onChange={handleDateChange}
+                    renderInput={(params) => <TextField {...params} />}
+                    views={['year']}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </Grid>
 
-          <Grid item xs={12} my={3}>
-            <Button fullWidth variant="contained" color="primary" type="submit">
-              Create
-            </Button>
+            <Grid item xs={12} my={3}>
+              <Button fullWidth variant="contained" color="primary" type="submit">
+                Create
+              </Button>
+            </Grid>
+            <Grid item></Grid>
           </Grid>
-          <Grid item></Grid>
-        </Grid>
-      </form>
-    </Box>
+        </form>
+      </Box>
+    </Fade>
   )
 }

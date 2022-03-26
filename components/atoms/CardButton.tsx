@@ -6,40 +6,38 @@ type CardButtonProps = {
   onClick?: () => void
 }
 
-export const CardButton: React.FC<CardButtonProps> = (props) => {
-  return (
-    <Card
+export const CardButton: React.FC<CardButtonProps> = (props) => (
+  <Card
+    sx={{
+      height: 340,
+      width: 240,
+    }}
+  >
+    <CardContent
       sx={{
-        height: 340,
-        width: 240,
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      <CardContent
-        sx={{
-          display: 'flex',
-          height: '100%',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Button sx={{ height: '100%' }} fullWidth onClick={props.onClick}>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            {props.icon}
-            <Typography
-              sx={{
-                fontSize: 14,
-                fontFamily: 'Roboto',
-                textTransform: 'none',
-              }}
-              color="text.secondary"
-              gutterBottom
-            >
-              {props.title}
-            </Typography>
-          </Box>
-        </Button>
-      </CardContent>
-    </Card>
-  )
-}
+      <Button sx={{ height: '100%' }} fullWidth onClick={props.onClick}>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          {props.icon}
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontFamily: 'Roboto',
+              textTransform: 'none',
+            }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {props.title}
+          </Typography>
+        </Box>
+      </Button>
+    </CardContent>
+  </Card>
+)

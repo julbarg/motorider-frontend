@@ -9,7 +9,9 @@ type DashboardProps = {
 }
 
 export const Dashboard: React.FC<DashboardProps> = (props) => {
-  if (!props.user) {
+  const { user, children } = props
+
+  if (!user) {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -33,10 +35,10 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
       }}
     >
       <DashboardSection primary>
-        <DashboardNav user={props.user} />
+        <DashboardNav user={user} />
       </DashboardSection>
 
-      <DashboardSection>{props.children}</DashboardSection>
+      <DashboardSection>{children}</DashboardSection>
     </Box>
   )
 }

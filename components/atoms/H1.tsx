@@ -4,15 +4,8 @@ type Props = {
   color: string
 }
 
-export const H1: React.FC<Props> = (props) => {
-  return (
-    <Typography
-      color={props.color}
-      variant="h4"
-      component="h2"
-      sx={{ fontFamily: 'Anton' }}
-    >
-      {props.children}
-    </Typography>
-  )
-}
+export const H1: React.FC<Props> = (props) => (
+  <Typography color={props.color} variant="h4" component="h2" sx={{ fontFamily: 'Anton' }}>
+    {props.children}
+  </Typography>
+)

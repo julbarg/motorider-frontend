@@ -8,6 +8,7 @@ import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes'
 import { numberWithCommas } from 'utils/number-helper'
 import { useEffect, useState } from 'react'
 import _ from 'lodash'
+import { NoData } from 'components/atoms/NoDataRow'
 
 type ExpensesDetailsProps = {
   pieChartData: DataEntry[]
@@ -32,26 +33,50 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
     setCurrentExpenses(_.slice(expenses, start, end))
   }
 
-  const renderPieChartData = () =>
-    pieChartData
-      .sort((a, b) => b.value - a.value)
-      .map((item, key) => (
-        <Box key={key} display="flex" my={2}>
-          <Box
-            sx={{
-              width: '25px',
-              height: '25px',
-              borderRadius: '50%',
-              backgroundColor: item.color,
-            }}
-          />
-          <Box px={2}>
-            <Typography variant="body1" color="text.secondary">
-              {item.title}: <strong>${numberWithCommas(item.value.toString())}</strong>
-            </Typography>
-          </Box>
-        </Box>
-      ))
+  const renderExpenses = () => {
+    if (currentExpenses.length === 0) {
+      return <NoData numberOfCoumns={12} />
+    }
+    return currentExpenses.map((expense, key) => (
+      <Grid item key={key} xs={6}>
+        <Expense expense={expense} />
+      </Grid>
+    ))
+  }
+
+  const renderPieChartData = () => {
+    if (pieChartData!.length === 0) {
+      return <NoData numberOfCoumns={12} />
+    }
+    return (
+      <>
+        <Grid item xs={4}>
+          <PieChartFullOption data={pieChartData} />
+        </Grid>
+        <Grid item xs={7} px={5} py={2}>
+          {pieChartData
+            .sort((a, b) => b.value - a.value)
+            .map((item, key) => (
+              <Box key={key} display="flex" my={2}>
+                <Box
+                  sx={{
+                    width: '25px',
+                    height: '25px',
+                    borderRadius: '50%',
+                    backgroundColor: item.color,
+                  }}
+                />
+                <Box px={2}>
+                  <Typography variant="body1" color="text.secondary">
+                    {item.title}: <strong>${numberWithCommas(item.value.toString())}</strong>
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
+        </Grid>
+      </>
+    )
+  }
 
   return (
     <Paper elevation={2} sx={{ padding: 3, borderRadius: '15px' }}>
@@ -62,12 +87,7 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
         </Box>
       </Typography>
       <Grid container justifyContent="space-between">
-        <Grid item xs={4}>
-          <PieChartFullOption data={pieChartData} />
-        </Grid>
-        <Grid item xs={7} px={5} py={2}>
-          {renderPieChartData()}
-        </Grid>
+        {renderPieChartData()}
       </Grid>
       <Grid container justifyContent="space-between" mt={3}>
         <Grid item>
@@ -94,11 +114,7 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
       </Grid>
       <Box my={2}>
         <Grid container spacing={5} alignItems="center">
-          {currentExpenses.map((expense, key) => (
-            <Grid item key={key} xs={6}>
-              <Expense expense={expense} />
-            </Grid>
-          ))}
+          {renderExpenses()}
         </Grid>
         <Box display="flex" justifyContent="center" my={3}>
           <Pagination
