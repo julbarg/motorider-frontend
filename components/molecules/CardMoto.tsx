@@ -4,6 +4,7 @@ import { IMoto } from 'types'
 import { numberWithCommas } from 'utils/number-helper'
 import _ from 'lodash'
 import { makes } from 'data/make'
+import { getMakeLabel } from 'utils/moto-helper'
 
 type CardMotoProps = {
   moto: IMoto
@@ -41,11 +42,7 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
           component="h4"
           mb={0}
         >
-          {
-            makes
-              .find((make) => make.value === moto.make)
-              ?.models.find((model) => model.value === moto.model)?.label
-          }
+          {getMakeLabel(moto)}
         </Typography>
         <Typography variant="subtitle2" color="primary" fontFamily="Anton">
           {_.upperCase(moto.licensePlate)}

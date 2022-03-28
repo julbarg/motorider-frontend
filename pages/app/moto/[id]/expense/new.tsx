@@ -9,6 +9,7 @@ import { DashboardTitle } from 'components/atoms/DashboardTitle'
 import { CreateExpense } from 'components/molecules/CreateExpense'
 import { connectToDB, moto } from 'db'
 import { IMoto } from 'types'
+import { NotFound } from 'components/molecules/NotFound'
 
 type AddNewExpensePageProps = {
   session: Session
@@ -26,6 +27,10 @@ const AddNewExpensePage: NextPage<AddNewExpensePageProps> = (props) => {
 
   if (!loading && !session) {
     return <SessionExpiredDialog onClick={() => router.push('/')} />
+  }
+
+  if (!moto) {
+    return <NotFound />
   }
 
   return (

@@ -12,6 +12,7 @@ import { IExpense, IExpensesByCategory, IMoto } from 'types'
 import { connectToDB, expense, moto } from 'db'
 import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes'
 import { categories } from 'data/categories'
+import { NotFound } from 'components/molecules/NotFound'
 
 type MotoPageProps = {
   session: Session
@@ -33,8 +34,12 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
     return <SessionExpiredDialog onClick={() => router.push('/')} />
   }
 
+  if (!moto) {
+    return <NotFound />
+  }
+
   const words = _.words(moto.model)
-  const secondTile = words.pop() || ''
+  const secondTile = _.capitalize(words.pop()) || ''
   const initialTitle = words.join(' ')
 
   return (

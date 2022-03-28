@@ -72,9 +72,9 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
       },
     })
 
-    await res.json()
+    const motoResponse: { data: IMoto } = await res.json()
 
-    router.push('/app')
+    router.push(`/app/moto/${motoResponse?.data?._id}`)
   }
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { ExpensesDetails } from './ExpensesDetails'
 import _ from 'lodash'
 import { numberWithCommas } from 'utils/number-helper'
 import { useEffect, useState } from 'react'
+import { getMakeLabel } from 'utils/moto-helper'
 
 type MotoProps = {
   moto: IMoto
@@ -40,7 +41,7 @@ export const Moto: React.FC<MotoProps> = (props) => {
                   component="h4"
                   sx={{ mb: 0 }}
                 >
-                  {_.capitalize(moto.model)} - {_.upperCase(moto.licensePlate)}
+                  {getMakeLabel(moto)} - {_.upperCase(moto.licensePlate)}
                 </Typography>
                 <Typography variant="subtitle1" color="secondary">
                   {_.upperCase(moto.make)}
