@@ -28,7 +28,7 @@ export const Moto: React.FC<MotoProps> = (props) => {
             <Card sx={{ display: 'flex', borderRadius: '15px' }}>
               <CardMedia
                 component="img"
-                sx={{ flexBasis: '50%', width: '50%' }}
+                sx={{ flexBasis: '50%', width: '50%', px: 3, py: 2 }}
                 image={`/images/${moto.make}-${moto.model}.png`}
               />
               <CardContent sx={{ padding: 3, flexBasis: '50%' }}>

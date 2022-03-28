@@ -61,7 +61,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/expense/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/expense`, {
       method: 'POST',
       body: JSON.stringify({ ...formValues, motoId: moto._id }),
       headers: {

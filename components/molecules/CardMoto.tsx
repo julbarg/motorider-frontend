@@ -17,21 +17,22 @@ export const CardMoto: React.FC<CardMotoProps> = (props) => {
     <Card
       sx={{
         width: 240,
-        minHeight: 340,
+        minHeight: 320,
         cursor: 'pointer',
       }}
       onClick={() => router.push(`/app/moto/${moto._id}`)}
     >
       <CardMedia
         component="img"
-        height="160"
+        height="180"
         image={`/images/${moto.make}-${moto.model}.png`}
         alt="Duke 390"
         sx={{
           objectFit: 'cover',
+          p: 2,
         }}
       />
-      <CardContent>
+      <CardContent sx={{ py: 0 }}>
         <Typography
           fontFamily="Anton"
           color="primary"

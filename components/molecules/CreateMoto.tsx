@@ -64,7 +64,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/moto/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/moto`, {
       method: 'POST',
       body: JSON.stringify({ ...formValues }),
       headers: {

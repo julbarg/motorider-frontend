@@ -9,7 +9,7 @@ type CardButtonProps = {
 export const CardButton: React.FC<CardButtonProps> = (props) => (
   <Card
     sx={{
-      height: 340,
+      height: 320,
       width: 240,
     }}
   >
