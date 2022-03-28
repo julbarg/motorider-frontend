@@ -20,9 +20,9 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <H1 color="secondary.main">
-            {_.capitalize(props.initialTitle)}{' '}
+            {props.initialTitle}{' '}
             <Box sx={{ color: 'primary.main' }} component="span">
-              {_.capitalize(props.secondTile)}
+              {props.secondTile}
             </Box>
           </H1>
           <Box sx={{ marginTop: '-5px' }}>{props.subtitle}</Box>
@@ -33,9 +33,7 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
           </Button>
         </Box>
       </Box>
-      {showBackButton && (
-        <Button onClick={() => router.back()}>&larr; Back</Button>
-      )}
+      {showBackButton && <Button onClick={() => router.back()}>&larr; Back</Button>}
     </Box>
   )
 }

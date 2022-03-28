@@ -38,8 +38,9 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
     return <NotFound />
   }
 
-  const words = _.words(moto.model)
-  const secondTile = _.capitalize(words.pop()) || ''
+  const words = _.words(moto.model).map((word) => _.capitalize(word))
+  console.log(words)
+  const secondTile = words.pop() || ''
   const initialTitle = words.join(' ')
 
   return (
