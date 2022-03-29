@@ -22,7 +22,7 @@ export const NotFound: React.FC<NotFoundProps> = (props) => {
           display="grid"
           sx={{
             placeItems: 'center',
-            height: '100%',
+            height: { md: '100%' },
           }}
         >
           <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">

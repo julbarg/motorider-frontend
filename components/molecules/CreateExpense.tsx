@@ -161,7 +161,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
                 label="Current Km"
               />
             </Grid>
-            <Grid item xs={6} textAlign="center">
+            <Grid item md={6} xs={12} textAlign="center">
               <CategoryIcon category={formValues.category} />
             </Grid>
 
