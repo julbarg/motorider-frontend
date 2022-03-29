@@ -19,10 +19,10 @@ yarn run start
 ```
 
 ### Build With
-- Next.js
+- [Next.js](https://nextjs.org/)
 - React
 - Node.js
-- Material UI
+- [Material UI](https://mui.com/getting-started/installation/)
 - MongoDB
 
 
