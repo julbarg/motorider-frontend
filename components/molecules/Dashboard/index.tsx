@@ -29,7 +29,7 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: '1fr 3fr',
+        gridTemplateColumns: { md: '1fr 3fr' },
         gap: 2,
         minHeight: '90vh',
       }}

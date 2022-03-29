@@ -26,10 +26,10 @@ export const Moto: React.FC<MotoProps> = (props) => {
       <Grid container spacing={3}>
         <Grid item xs={12} my={1}>
           <Fade in={true} timeout={1000}>
-            <Card sx={{ display: 'flex', borderRadius: '15px' }}>
+            <Card sx={{ display: { md: 'flex' }, borderRadius: '15px' }}>
               <CardMedia
                 component="img"
-                sx={{ flexBasis: '50%', width: '50%', px: 3, py: 2 }}
+                sx={{ flexBasis: { md: '50%' }, width: { xs: '100%', md: '50%' }, px: 3, py: 2 }}
                 image={`/images/${moto.make}-${moto.model}.png`}
               />
               <CardContent sx={{ padding: 3, flexBasis: '50%' }}>

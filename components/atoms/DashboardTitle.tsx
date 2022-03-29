@@ -3,6 +3,7 @@ import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { H1 } from './H1'
 import _ from 'lodash'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 type DashboardTitleProps = {
   initialTitle: string
@@ -29,7 +30,8 @@ export const DashboardTitle: React.FC<DashboardTitleProps> = (props) => {
         </Box>
         <Box>
           <Button variant="contained" onClick={() => signOut()}>
-            Sign Out
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>Sign Out</Box>
+            <LogoutIcon sx={{ display: { xs: 'block', md: 'none' } }} fontSize="small" />
           </Button>
         </Box>
       </Box>

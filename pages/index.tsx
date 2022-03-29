@@ -30,12 +30,18 @@ const Home: NextPage = () => {
         justifyContent="center"
         textAlign="center"
         alignItems="center"
-        height="80vh"
-        sx={{ borderRadius: '15px' }}
+        sx={{
+          borderRadius: '15px',
+          height: {
+            md: '80vh',
+            xs: '40vh',
+          },
+        }}
       >
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
           sx={{
             backgroundImage: `url(${backGroundLogin.src})`,
             backgroundSize: 'cover',
@@ -48,7 +54,10 @@ const Home: NextPage = () => {
             alignItems: 'center',
             boxShadow:
               '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-            borderRadius: '15px 0 0 15px',
+            borderRadius: {
+              md: '15px 0 0 15px',
+              xs: '15px 15px 0 0',
+            },
           }}
         >
           <Logo size="large" />
@@ -56,7 +65,8 @@ const Home: NextPage = () => {
         </Grid>
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
           sx={{
             backgroundColor: 'common.white',
             height: '100%',
@@ -66,7 +76,10 @@ const Home: NextPage = () => {
             gridTemplateColumns: '100%',
             boxShadow:
               '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-            borderRadius: '0 15px 15px 0',
+            borderRadius: {
+              md: '0 15px 15px 0',
+              xs: '0 0 15px 15px',
+            },
           }}
         >
           <Grid container justifyContent="center" alignItems="center">

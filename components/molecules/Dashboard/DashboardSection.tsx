@@ -13,10 +13,10 @@ export const DashboardSection = ({
     sx={{
       ...props.sx,
       backgroundColor: primary ? 'primary.main' : 'common.white',
-      py: 5,
-      px: primary ? 0 : 5,
+      py: { xs: 2, md: 5 },
+      px: { xs: primary ? 0 : 3, md: primary ? 0 : 5 },
       color: primary ? 'white' : 'text.secondary',
-      minHeight: '90vh',
+      minHeight: { md: '90vh' },
       borderRadius: '25px',
     }}
   >

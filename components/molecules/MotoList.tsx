@@ -23,7 +23,14 @@ export const MotoList: React.FC<MotoListProps> = (props) => {
             Motorbikes
           </Box>
         </H2>
-        <Grid container my={2} spacing={3}>
+        <Grid
+          container
+          my={2}
+          spacing={3}
+          sx={{
+            justifyContent: { xs: 'center', md: 'flex-start' },
+          }}
+        >
           <Grid item>
             <CardButton
               title="Add new Moto"

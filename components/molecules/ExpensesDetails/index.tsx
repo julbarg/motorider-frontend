@@ -50,7 +50,7 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
       return <NoData numberOfCoumns={12} />
     }
     return currentExpenses.map((expense, key) => (
-      <Grid item key={key} xs={6}>
+      <Grid item key={key} md={6} xs={12}>
         <Expense expense={expense} onDelete={() => handleDeleteExpense(expense)} />
       </Grid>
     ))
@@ -62,10 +62,10 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
     }
     return (
       <>
-        <Grid item xs={4}>
+        <Grid item md={4} xs={12} justifySelf="center" alignSelf="center">
           <PieChartFullOption data={pieChartData} />
         </Grid>
-        <Grid item xs={7} px={5} py={2}>
+        <Grid item md={7} xs={12} py={2} sx={{ px: { xs: 2, md: 5 } }}>
           {pieChartData
             .sort((a, b) => b.value - a.value)
             .map((item, key) => (

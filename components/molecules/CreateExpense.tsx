@@ -117,7 +117,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
                 }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 select
                 fullWidth
@@ -135,7 +135,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
@@ -148,7 +148,7 @@ export const CreateExpense: React.FC<CreateExpenseProps> = (props) => {
                 </LocalizationProvider>
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 id="km"

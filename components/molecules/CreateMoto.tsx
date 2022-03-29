@@ -89,7 +89,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
       <Box display="flex" flexDirection="column">
         <form onSubmit={handleSubmit}>
           <Grid container flexDirection="row" my={1} spacing={3}>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 name="make"
@@ -107,7 +107,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 name="model"
@@ -125,7 +125,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 id="engine"
@@ -141,7 +141,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
                 }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 id="km"
@@ -157,7 +157,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
                 }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 id="licensePlate"
@@ -170,7 +170,7 @@ export const CreateMoto: React.FC<CreateMotoProps> = (props) => {
                 helperText="MWM 874"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
