@@ -2,19 +2,11 @@ import { Db } from 'mongodb'
 import { nanoid } from 'nanoid'
 import { IExpense } from 'types'
 
-export const getExpensesByMotoIdAndUserId = async (
-  db: Db,
-  userId: string,
-  motoId: string
-) => {
+export const getExpensesByMotoIdAndUserId = async (db: Db, userId: string, motoId: string) => {
   return db.collection('expenses').find({ motoId, userId }).toArray()
 }
 
-export const groupByCategory = async (
-  db: Db,
-  userId: string,
-  motoId: string
-) => {
+export const groupByCategory = async (db: Db, userId: string, motoId: string) => {
   return db
     .collection('expenses')
     .aggregate([
@@ -39,4 +31,14 @@ export const createExpenses = async (db: Db, expense: IExpense) => {
     .then(({ ops }) => ops[0])
 
   return newExpense
+}
+
+export const deleteExpense = async (db: Db, expenseId: string, userId: string, motoId: string) => {
+  const result = await db.collection('expenses').deleteOne({
+    _id: expenseId,
+    userId,
+    motoId,
+  })
+
+  return result
 }

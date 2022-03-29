@@ -33,13 +33,25 @@ export const ExpensesDetails: React.FC<ExpensesDetailsProps> = (props) => {
     setCurrentExpenses(_.slice(expenses, start, end))
   }
 
+  const handleDeleteExpense = async (expense: IExpense) => {
+    await fetch(`/api/expense/${expense._id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ motoId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    router.reload()
+  }
+
   const renderExpenses = () => {
     if (currentExpenses.length === 0) {
       return <NoData numberOfCoumns={12} />
     }
     return currentExpenses.map((expense, key) => (
       <Grid item key={key} xs={6}>
-        <Expense expense={expense} />
+        <Expense expense={expense} onDelete={() => handleDeleteExpense(expense)} />
       </Grid>
     ))
   }

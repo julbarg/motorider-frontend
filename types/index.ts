@@ -28,6 +28,7 @@ export interface IMoto {
 }
 
 export interface IExpense {
+  _id?: string
   description: string
   amount: number
   category: string

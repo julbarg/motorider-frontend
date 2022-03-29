@@ -39,7 +39,6 @@ const MotoPage: NextPage<MotoPageProps> = (props) => {
   }
 
   const words = _.words(moto.model).map((word) => _.capitalize(word))
-  console.log(words)
   const secondTile = words.pop() || ''
   const initialTitle = words.join(' ')
 
